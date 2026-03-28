@@ -444,9 +444,9 @@ function HeroSection() {
           justifyContent: "center",
           width: "100%",
           maxWidth: "1200px",
-          gap: isMobile ? "1.5rem" : "6vw",
+          gap: isMobile ? "0.5rem" : "6vw",
           padding: "0 5%",
-          marginTop: isMobile ? "4vh" : 0,
+          marginTop: isMobile ? "2vh" : 0,
         }}
       >
         {/* Hero Text */}
@@ -800,7 +800,7 @@ function MenuSection() {
                     <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem", flexWrap: "wrap" }}>
                       {Object.entries(item.prices).map(([size, p]) => (
                         <span key={size} style={{ fontSize: "0.7rem", color: COLORS.ashGrey, fontFamily: "'DM Sans', sans-serif" }}>
-                          {size} <span style={{ color: COLORS.goldenGlow, fontFamily: "'Cormorant Garamond', serif", fontSize: "0.95rem" }}>${p}</span>
+                          {size} <span style={{ color: hoveredItem === item.name ? COLORS.goldenGlow : COLORS.white, fontFamily: "'Cormorant Garamond', serif", fontSize: "0.95rem", transition: "color 0.2s" }}>${p}</span>
                         </span>
                       ))}
                     </div>
@@ -819,7 +819,7 @@ function MenuSection() {
                 )}
                 {/* Single price (both mobile/desktop) */}
                 {item.price && (
-                  <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 500, marginLeft: "1.5rem", paddingTop: "0.1rem", whiteSpace: "nowrap", flexShrink: 0, color: hoveredItem === item.name ? COLORS.goldenGlow : COLORS.ashGrey, transition: "color 0.2s" }}>
+                  <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 500, marginLeft: "1.5rem", paddingTop: "0.1rem", whiteSpace: "nowrap", flexShrink: 0, color: hoveredItem === item.name ? COLORS.goldenGlow : (isMobile ? COLORS.white : COLORS.ashGrey), transition: "color 0.2s" }}>
                     {item.price}
                   </span>
                 )}
