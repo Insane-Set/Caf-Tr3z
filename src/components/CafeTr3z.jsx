@@ -1,0 +1,1163 @@
+/**
+ * CAFÉ TR3Z — Premium Website Component
+ * Stack: React + Framer Motion
+ * Aesthetic: Minimalist-Industrial / Cinematic Scroll
+ * UI/UX Pro Max Audited ✓
+ */
+
+import { useRef, useEffect, useState, useCallback } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useInView,
+  AnimatePresence,
+} from "framer-motion";
+
+import heroImg from "../assets/hero-cup.png";
+import spaceBarraImg from "../assets/space-barra.jpg";
+import spaceLuzImg from "../assets/space-luz.jpg";
+import spaceDetalleImg from "../assets/space-detalle.jpg";
+import spaceHorasImg from "../assets/space-horas.jpg";
+import spaceComunidadImg from "../assets/space-comunidad.jpg";
+
+
+/* ─── DESIGN TOKENS ─── */
+const COLORS = {
+  white: "#FEFEFE",
+  darkKhaki: "#46420C",
+  goldenGlow: "#E4DC22",
+  ashGrey: "#B5B4A2",
+  pitchBlack: "#0D0C09",
+};
+
+/* ─── MENU DATA ─── */
+const MENU_SECTIONS = [
+  {
+    category: "Café",
+    items: [
+      { name: "Espresso 2oz", price: "$30", desc: "La esencia pura de nuestro café." },
+      { name: "Espresso Americano", prices: { CH: 50, M: 55, G: 62, XL: 105 }, desc: "Espresso extraído sobre agua caliente." },
+      { name: "Capuccino / Latte", prices: { CH: 75, M: 80, G: 87, XL: 145 }, desc: "Bebidas a base de espresso con leche cremosa (Natural o esencia tr3z)." },
+      { name: "Caramel Macchiato", prices: { CH: 80, M: 85, G: 92, XL: 155 }, desc: "Toque de vainilla y caramelo." },
+      { name: "Cold Brew", prices: { CH: 70, M: 75, G: 82, XL: 140 }, desc: "Extracción lenta en frío por 18 horas." },
+      { name: "Café de Olla", prices: { CH: 70, M: 75, G: 82, XL: 140 }, desc: "Café tradicional mexicano con canela y piloncillo." },
+    ],
+  },
+  {
+    category: "Barista",
+    items: [
+      { name: "Dolce Gusto", prices: { CH: 80, M: 85, G: 92, XL: 155 }, desc: "Vainilla - Canela. Una de las creaciones insignia." },
+      { name: "Media Noche", prices: { CH: 80, M: 85, G: 92, XL: 155 }, desc: "Vainilla - Lavanda. Suave y aromático." },
+      { name: "Selva Negra", prices: { CH: 80, M: 85, G: 92, XL: 155 }, desc: "Mocha - Cereza. Combinación exquisita." },
+      { name: "Ferrero", prices: { CH: 80, M: 85, G: 92, XL: 155 }, desc: "Mocha - Avellana. Para los amantes del chocolate." },
+      { name: "Mocha-Menta", prices: { CH: 80, M: 85, G: 92, XL: 155 }, desc: "Chocolate, café y toque refrescante de menta." },
+      { name: "Mocharelo", prices: { CH: 80, M: 85, G: 92, XL: 155 }, desc: "Mocha - Caramelo." },
+      { name: "Bebida de Temporada", prices: { CH: 80, M: 85, G: 92, XL: 155 }, desc: "Pregunta por la especialidad del mes en barra." },
+    ],
+  },
+  {
+    category: "Frappés",
+    items: [
+      { name: "Frappé Clásico", prices: { CH: 85, M: 90, G: 97, XL: 160 }, desc: "Café o esencia tr3z. (Pídelo sin café si gustas)" },
+      { name: "Frappé Especial", prices: { CH: 90, M: 95, G: 102, XL: 165 }, desc: "Creaciones Barista, Chai o Matcha." },
+    ]
+  },
+  {
+    category: "Otras Bebidas",
+    items: [
+      { name: "Orange Espresso Tonic", prices: { CH: 80, M: 85, G: 92, XL: 155 }, desc: "Espresso, agua tónica y jugo de naranja." },
+      { name: "Chocolate Artesanal", prices: { CH: 80, M: 85, G: 92, XL: 160 }, desc: "Chocolate rico y caliente. (Sin café)" },
+      { name: "Matcha Latte", prices: { CH: 80, M: 85, G: 92, XL: 160 }, desc: "Té verde japonés, leche cremosa. (Sin café)" },
+      { name: "Chai Vainilla Latte", prices: { CH: 80, M: 85, G: 92, XL: 160 }, desc: "Especias orientales con vainilla y leche." },
+      { name: "Limonada Natural / Mineral", prices: { CH: 55, M: 60, G: 67, XL: 115 }, desc: "Opción refrescante para el calor." },
+      { name: "Berries Tonic", prices: { CH: 70, M: 75, G: 82, XL: 140 }, desc: "Tónica burbujeante con frutos rojos." },
+    ]
+  },
+  {
+    category: "Alimentos",
+    items: [
+      { name: "Sandwich Corbani", price: "$115", desc: "Cerdo, pavo, peperoni, queso. Recomendado agregar tocino." },
+      { name: "Sandwich Pecaminoso", price: "$129", desc: "Pavo, cerdo ahumado, tocino, doble queso, espinacas." },
+      { name: "Waffle Polo Norte", price: "$129", desc: "2 waffles, fresas, plátano, helado de vainilla." },
+      { name: "Waffle Loaded", price: "$135", desc: "Frutos rojos, plátano, galleta, crema batida, helado, bañado en salsa." },
+      { name: "Ensalada Mediterránea", price: "$139", desc: "100g de pechuga, espinacas, fresas, queso feta, nueces." },
+      { name: "Nachos Con Todo", prices: { CH: 125, G: 225 }, desc: "Carne asada, chorizo, chilibeans, queso, crema, jalapeños." },
+    ]
+  },
+  {
+    category: "Postres",
+    items: [
+      { name: "Postre de la casa", price: "$85", desc: "Pan de elote horneado del día con helado de vainilla." },
+      { name: "Brownie a la moda", price: "$85", desc: "Brownie calientito servido con helado." },
+      { name: "Big Apple Pie", price: "$105", desc: "Estilo Julian. Solo en temporada." },
+      { name: "Strudel de manzana", price: "$89", desc: "Con helado de vainilla y toque de caramelo." },
+      { name: "Rebanada de pastel", price: "$75", desc: "Pregunta en barra por las opciones de hoy." },
+    ]
+  }
+];
+
+const GALLERY_ITEMS = [
+  { id: 1, label: "La Barra", aspect: "portrait", img: spaceBarraImg },
+  { id: 2, label: "Luz Matutina", aspect: "landscape", img: spaceLuzImg },
+  { id: 3, label: "El Detalle", aspect: "portrait", img: spaceDetalleImg },
+  { id: 4, label: "Después de Horas", aspect: "landscape", img: spaceHorasImg },
+  { id: 5, label: "Comunidad", aspect: "portrait", img: spaceComunidadImg },
+];
+
+
+
+
+/* ─── HOOKS ─── */
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < breakpoint : false
+  );
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, [breakpoint]);
+  return isMobile;
+}
+
+/* ─── GRAIN OVERLAY ─── */
+function GrainOverlay() {
+  const isMobile = useIsMobile();
+  if (isMobile) return null;
+
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 9999,
+        pointerEvents: "none",
+        opacity: 0.035,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "128px 128px",
+      }}
+    />
+  );
+}
+
+/* ─── FLOATING NAV ─── */
+function FloatingNav() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 60);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  const navLinks = [
+    { label: "Historia", href: "#story" },
+    { label: "Menú", href: "#menu" },
+    { label: "Espacio", href: "#space" },
+    { label: "Domicilio", href: "#delivery" },
+    { label: "Contacto", href: "#contact" },
+  ];
+
+  const linkStyle = {
+    fontFamily: "'DM Sans', sans-serif",
+    fontSize: "0.75rem",
+    letterSpacing: "0.12em",
+    textTransform: "uppercase",
+    color: COLORS.ashGrey,
+    textDecoration: "none",
+    transition: "color 0.2s",
+    cursor: "pointer",
+  };
+
+  return (
+    <>
+      <motion.nav
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        style={{
+          position: "fixed",
+          top: 16,
+          left: isMobile ? 16 : 0,
+          right: isMobile ? 16 : 0,
+          marginLeft: isMobile ? undefined : "auto",
+          marginRight: isMobile ? undefined : "auto",
+          width: isMobile ? "calc(100% - 32px)" : "fit-content",
+          zIndex: 1000,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: isMobile ? "space-between" : "center",
+          gap: isMobile ? "0" : "2rem",
+          padding: scrolled ? "0.6rem 1.5rem" : "1rem 1.5rem",
+          borderRadius: "9999px",
+          backdropFilter: scrolled ? "blur(20px) saturate(180%)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(20px) saturate(180%)" : "none",
+          backgroundColor: scrolled ? "rgba(13,12,9,0.85)" : "transparent",
+          border: scrolled ? "1px solid rgba(228,220,34,0.15)" : "1px solid transparent",
+          boxShadow: scrolled ? "0 4px 20px rgba(0,0,0,0.5)" : "none",
+          transition: "background-color 0.4s, border-color 0.4s, padding 0.4s, box-shadow 0.4s",
+        }}
+      >
+        {/* Logo */}
+        <a href="#hero" style={{ display: "flex", alignItems: "center", gap: "0.4rem", textDecoration: "none", cursor: "pointer" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+            <div style={{ height: "2.5px", width: "16px", backgroundColor: COLORS.goldenGlow, borderRadius: "2px" }} />
+            <div style={{ height: "2.5px", width: "11px", backgroundColor: COLORS.goldenGlow, borderRadius: "2px", marginLeft: "5px" }} />
+            <div style={{ height: "2.5px", width: "16px", backgroundColor: COLORS.goldenGlow, borderRadius: "2px" }} />
+          </div>
+          <span style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontWeight: 700,
+            fontSize: "1rem",
+            color: COLORS.white,
+            letterSpacing: "0.08em",
+          }}>
+            TR<span style={{ color: COLORS.goldenGlow, display: "inline-block", transform: "translateY(-0.24em)" }}>3</span>Z
+          </span>
+        </a>
+
+        {/* Desktop nav links */}
+        {!isMobile && navLinks.map((item) => (
+          <a
+            key={item.label}
+            href={item.href}
+            style={linkStyle}
+            onMouseEnter={(e) => (e.target.style.color = COLORS.goldenGlow)}
+            onMouseLeave={(e) => (e.target.style.color = COLORS.ashGrey)}
+          >
+            {item.label}
+          </a>
+        ))}
+
+        {!isMobile && (
+          <a
+            href="#contact"
+            style={{
+              padding: "0.45rem 1.2rem",
+              borderRadius: "9999px",
+              border: `1px solid ${COLORS.goldenGlow}`,
+              color: COLORS.goldenGlow,
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "0.7rem",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              textDecoration: "none",
+              cursor: "pointer",
+              transition: "background-color 0.3s, color 0.3s",
+            }}
+            onMouseEnter={(e) => { e.target.style.backgroundColor = COLORS.goldenGlow; e.target.style.color = COLORS.pitchBlack; }}
+            onMouseLeave={(e) => { e.target.style.backgroundColor = "transparent"; e.target.style.color = COLORS.goldenGlow; }}
+          >
+            Visítanos
+          </a>
+        )}
+
+        {/* Mobile hamburger */}
+        {isMobile && (
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: "8px",
+              display: "flex",
+              flexDirection: "column",
+              gap: menuOpen ? "0px" : "5px",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "32px",
+              height: "32px",
+              position: "relative",
+            }}
+          >
+            <span style={{
+              display: "block",
+              width: "20px",
+              height: "2px",
+              backgroundColor: COLORS.goldenGlow,
+              borderRadius: "2px",
+              transition: "all 0.3s ease",
+              transform: menuOpen ? "rotate(45deg) translateY(0)" : "none",
+              position: menuOpen ? "absolute" : "relative",
+            }} />
+            <span style={{
+              display: "block",
+              width: "20px",
+              height: "2px",
+              backgroundColor: COLORS.goldenGlow,
+              borderRadius: "2px",
+              transition: "all 0.3s ease",
+              opacity: menuOpen ? 0 : 1,
+            }} />
+            <span style={{
+              display: "block",
+              width: "20px",
+              height: "2px",
+              backgroundColor: COLORS.goldenGlow,
+              borderRadius: "2px",
+              transition: "all 0.3s ease",
+              transform: menuOpen ? "rotate(-45deg) translateY(0)" : "none",
+              position: menuOpen ? "absolute" : "relative",
+            }} />
+          </button>
+        )}
+      </motion.nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 999,
+              backgroundColor: "rgba(13,12,9,0.97)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "2.5rem",
+            }}
+          >
+            {navLinks.map((item, i) => (
+              <motion.a
+                key={item.label}
+                href={item.href}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08 }}
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: "2rem",
+                  fontWeight: 600,
+                  color: COLORS.white,
+                  textDecoration: "none",
+                  letterSpacing: "0.05em",
+                  cursor: "pointer",
+                }}
+              >
+                {item.label}
+              </motion.a>
+            ))}
+            <motion.a
+              href="#contact"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+              onClick={() => setMenuOpen(false)}
+              style={{
+                marginTop: "1rem",
+                padding: "0.9rem 2.2rem",
+                borderRadius: "9999px",
+                border: `1.5px solid ${COLORS.goldenGlow}`,
+                color: COLORS.goldenGlow,
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "0.8rem",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+                cursor: "pointer",
+              }}
+            >
+              Visítanos
+            </motion.a>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+/* ─── HERO ─── */
+function HeroSection() {
+  const ref = useRef(null);
+  const isMobile = useIsMobile();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+
+  const y1 = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const y2 = useTransform(scrollYProgress, [0, 1], ["0%", isMobile ? "25%" : "55%"]);
+  const y3 = useTransform(scrollYProgress, [0, 1], ["0%", isMobile ? "40%" : "80%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const indicatorOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
+  const smoothY2 = useSpring(y2, { stiffness: 60, damping: 24 });
+  const smoothOpacity = useSpring(opacity, { stiffness: 50, damping: 24 });
+  const smoothIndicatorOpacity = useSpring(indicatorOpacity, { stiffness: 50, damping: 24 });
+
+  return (
+    <section
+      id="hero"
+      ref={ref}
+      style={{
+        position: "relative",
+        height: "100vh",
+        minHeight: isMobile ? "600px" : "700px",
+        overflow: "hidden",
+        backgroundColor: COLORS.pitchBlack,
+        display: "flex",
+        alignItems: isMobile ? "flex-start" : "center",
+        justifyContent: "center",
+        paddingTop: isMobile ? "18vh" : 0,
+      }}
+    >
+      <motion.div
+        style={{
+          position: "absolute",
+          inset: "-20%",
+          backgroundImage: `
+            radial-gradient(ellipse 60% 40% at 70% 50%, rgba(228,220,34,0.08) 0%, transparent 70%),
+            radial-gradient(ellipse 40% 60% at 20% 60%, rgba(70,66,12,0.4) 0%, transparent 70%)
+          `,
+          y: y1,
+        }}
+      />
+
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          display: "flex",
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          maxWidth: "1200px",
+          gap: isMobile ? "2rem" : "6vw",
+          padding: "0 5%",
+          marginTop: isMobile ? "8vh" : 0,
+        }}
+      >
+        {/* Hero Text */}
+        <motion.div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: isMobile ? "center" : "flex-start",
+            textAlign: isMobile ? "center" : "left",
+            y: isMobile ? 0 : y3,
+            opacity: isMobile ? 1 : smoothOpacity,
+            width: isMobile ? "100%" : "auto",
+            maxWidth: "550px",
+          }}
+        >
+        <motion.p
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "0.7rem",
+            letterSpacing: "0.25em",
+            textTransform: "uppercase",
+            color: COLORS.goldenGlow,
+            marginBottom: "1.5rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: isMobile ? "center" : "flex-start",
+            gap: "0.75rem",
+          }}
+        >
+          <span style={{ display: isMobile ? "none" : "inline-block", width: "2rem", height: "1px", backgroundColor: COLORS.goldenGlow }} />
+          Mexicali, B.C. · Est. 2019
+        </motion.p>
+
+        <div style={{ overflow: "hidden", padding: "0.1em 0", width: "100%" }}>
+          <motion.h1
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.9, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: isMobile ? "clamp(4.5rem, 18vw, 6rem)" : "clamp(3.5rem, 8vw, 7rem)",
+              fontWeight: 700,
+              lineHeight: 1.05,
+              color: COLORS.white,
+              margin: 0,
+            }}
+          >
+            Café
+          </motion.h1>
+        </div>
+        <div style={{ overflow: "hidden", padding: "0.1em 0", width: "100%" }}>
+          <motion.h1
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.9, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: isMobile ? "clamp(4.5rem, 18vw, 6rem)" : "clamp(3.5rem, 8vw, 7rem)",
+              fontWeight: 700,
+              lineHeight: 1.05,
+              color: COLORS.white,
+              margin: 0,
+            }}
+          >
+            TR<span style={{ color: COLORS.goldenGlow, display: "inline-block", transform: "translateY(-0.24em)" }}>3</span>Z
+          </motion.h1>
+        </div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.1 }}
+          style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: isMobile ? "0.95rem" : "clamp(0.85rem, 1.5vw, 1.05rem)",
+            color: COLORS.ashGrey,
+            marginTop: "1.5rem",
+            maxWidth: "380px",
+            lineHeight: 1.65,
+          }}
+        >
+          Donde la precisión se encuentra con la calidez. Una experiencia de café boutique arraigada en el oficio, la cultura y la comunidad.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.3 }}
+          style={{ display: "flex", gap: "1rem", marginTop: "2.5rem", alignItems: "center", justifyContent: isMobile ? "center" : "flex-start", flexWrap: "wrap" }}
+        >
+          <a
+            href="#menu"
+            style={{
+              display: "inline-block",
+              padding: "0.9rem 2.2rem",
+              borderRadius: "9999px",
+              backgroundColor: "transparent",
+              border: `1.5px solid ${COLORS.goldenGlow}`,
+              color: COLORS.goldenGlow,
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "0.75rem",
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              textDecoration: "none",
+              cursor: "pointer",
+              transition: "background-color 0.3s, color 0.3s",
+            }}
+            onMouseEnter={(e) => { e.target.style.backgroundColor = COLORS.goldenGlow; e.target.style.color = COLORS.pitchBlack; }}
+            onMouseLeave={(e) => { e.target.style.backgroundColor = "transparent"; e.target.style.color = COLORS.goldenGlow; }}
+          >
+            Ver Menú
+          </a>
+          <a
+            href="#story"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              color: COLORS.ashGrey,
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "0.75rem",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              textDecoration: "none",
+              cursor: "pointer",
+              transition: "color 0.2s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = COLORS.goldenGlow)}
+            onMouseLeave={(e) => (e.currentTarget.style.color = COLORS.ashGrey)}
+          >
+            Nuestra Historia
+            <span style={{ fontSize: "1rem" }}>→</span>
+          </a>
+        </motion.div>
+      </motion.div>
+
+      {/* Signature Cup Image */}
+      <motion.div
+        style={{
+          display: "flex",
+          justifyContent: isMobile ? "center" : "flex-start",
+          y: smoothY2,
+          pointerEvents: "none",
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 40, scale: 0.9 }}
+          animate={{ opacity: isMobile ? 0.55 : 1, y: 0, scale: 1 }}
+          transition={{ duration: 1.2, delay: 1.6, ease: [0.16, 1, 0.3, 1] }}
+          style={{ 
+            width: isMobile ? "75vw" : "min(40vw, 550px)", 
+            aspectRatio: "1",
+            rotate: isMobile ? -2 : 0,
+          }}
+        >
+          <img 
+            src={heroImg} 
+            alt="Café Tr3z Signature Coffee" 
+            style={{ 
+              width: "100%", 
+              height: "100%", 
+              objectFit: "contain", 
+              filter: "drop-shadow(0 40px 80px rgba(228,220,34,0.15))" 
+            }} 
+          />
+        </motion.div>
+      </motion.div>
+      
+      </div>
+
+    </section>
+  );
+}
+
+/* ─── ACCORDION CARD DATA — EL ORIGEN ─── */
+/* ─── PIDE A DOMICILIO ─── */
+function DeliverySection() {
+  const isMobile = useIsMobile();
+
+  return (
+    <section id="delivery" style={{ backgroundColor: COLORS.pitchBlack, padding: isMobile ? "5rem 10%" : "8rem 10%", position: "relative" }}>
+      {/* Ambient Glow */}
+      <div aria-hidden="true" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "50%", height: "50%", borderRadius: "50%", background: "radial-gradient(circle, rgba(228,220,34,0.05) 0%, transparent 60%)", pointerEvents: "none" }} />
+      
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }} 
+        whileInView={{ opacity: 1, y: 0 }} 
+        viewport={{ once: true, margin: "-10%" }}
+        transition={{ duration: 0.8 }} 
+        style={{ textAlign: "center", marginBottom: isMobile ? "3rem" : "5rem" }}
+      >
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", letterSpacing: "0.3em", color: COLORS.goldenGlow, textTransform: "uppercase", marginBottom: "1rem" }}>
+          — Lleva Café Tr3z Contigo —
+        </p>
+        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? "clamp(2rem, 8vw, 3rem)" : "clamp(2.5rem, 5vw, 4rem)", fontWeight: 700, color: COLORS.white, margin: 0 }}>
+          Pide a Domicilio
+        </h2>
+      </motion.div>
+
+      <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: "2rem", justifyContent: "center", maxWidth: "800px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+        {/* Rappi */}
+        <motion.a 
+          href="https://www.rappi.com.mx/restaurantes/1923801310-cafe-tr3z"
+          target="_blank"
+          rel="noopener noreferrer"
+          whileHover={{ scale: 1.02, backgroundColor: "rgba(228,220,34,0.05)", borderColor: "rgba(228,220,34,0.3)" }}
+          whileTap={{ scale: 0.98 }}
+          style={{
+            flex: 1,
+            padding: "3rem 2rem",
+            borderRadius: "16px",
+            border: "1px solid rgba(181,180,162,0.15)",
+            backgroundColor: "#12120e",
+            textDecoration: "none",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "all 0.3s",
+            cursor: "pointer",
+          }}
+        >
+          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "2rem", color: COLORS.white, margin: "0 0 0.5rem 0", fontWeight: 600 }}>Rappi</h3>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem", color: COLORS.ashGrey, letterSpacing: "0.05em", textAlign: "center", margin: 0 }}>Llega directo a tu puerta</p>
+          <div style={{ marginTop: "2rem", padding: "0.5rem 1.5rem", borderRadius: "99px", border: `1px solid ${COLORS.goldenGlow}`, color: COLORS.goldenGlow, fontFamily: "'DM Sans', sans-serif", fontSize: "0.7rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>Pedir Ahora</div>
+        </motion.a>
+
+        {/* DiDi Food */}
+        <motion.a 
+          href="https://web.didiglobal.com/mx/food/mexicali-bcn/cafe-tr3z/5764607643247968488/"
+          target="_blank"
+          rel="noopener noreferrer"
+          whileHover={{ scale: 1.02, backgroundColor: "rgba(228,220,34,0.05)", borderColor: "rgba(228,220,34,0.3)" }}
+          whileTap={{ scale: 0.98 }}
+          style={{
+            flex: 1,
+            padding: "3rem 2rem",
+            borderRadius: "16px",
+            border: "1px solid rgba(181,180,162,0.15)",
+            backgroundColor: "#12120e",
+            textDecoration: "none",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "all 0.3s",
+            cursor: "pointer",
+          }}
+        >
+          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "2rem", color: COLORS.white, margin: "0 0 0.5rem 0", fontWeight: 600 }}>DiDi Food</h3>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem", color: COLORS.ashGrey, letterSpacing: "0.05em", textAlign: "center", margin: 0 }}>Ordena fácil y rápido</p>
+          <div style={{ marginTop: "2rem", padding: "0.5rem 1.5rem", borderRadius: "99px", border: `1px solid ${COLORS.goldenGlow}`, color: COLORS.goldenGlow, fontFamily: "'DM Sans', sans-serif", fontSize: "0.7rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>Pedir Ahora</div>
+        </motion.a>
+      </div>
+    </section>
+  );
+}
+/* ─── MENU ─── */
+function MenuSection() {
+  const [activeCategory, setActiveCategory] = useState(0);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const ref = useRef(null);
+  const isMobile = useIsMobile();
+  const isInView = useInView(ref, { once: true, margin: "-15%" });
+
+  return (
+    <section id="menu" ref={ref} style={{ backgroundColor: COLORS.pitchBlack, padding: isMobile ? "5rem 0" : "8rem 0", position: "relative" }}>
+      <motion.div initial={{ opacity: 0, y: 40 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8 }} style={{ textAlign: "center", marginBottom: isMobile ? "3rem" : "5rem" }}>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", letterSpacing: "0.3em", color: COLORS.goldenGlow, textTransform: "uppercase", marginBottom: "1rem" }}>
+          — Nuestra Carta —
+        </p>
+        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? "clamp(2rem, 8vw, 3rem)" : "clamp(2.5rem, 5vw, 4rem)", fontWeight: 700, color: COLORS.white, margin: 0 }}>
+          El Menú
+        </h2>
+      </motion.div>
+
+      <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ duration: 0.8, delay: 0.2 }}
+        style={{ display: "flex", justifyContent: "center", gap: "0.5rem", marginBottom: "3rem", padding: isMobile ? "0 1rem" : 0, flexWrap: "wrap" }}>
+        {MENU_SECTIONS.map((section, i) => (
+          <button
+            key={section.category}
+            onClick={() => setActiveCategory(i)}
+            style={{
+              padding: isMobile ? "0.6rem 1.2rem" : "0.5rem 1.5rem",
+              borderRadius: "9999px",
+              border: `1px solid ${activeCategory === i ? COLORS.goldenGlow : "rgba(181,180,162,0.2)"}`,
+              backgroundColor: activeCategory === i ? COLORS.goldenGlow : "transparent",
+              color: activeCategory === i ? COLORS.pitchBlack : COLORS.ashGrey,
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: isMobile ? "0.75rem" : "0.7rem",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+              transition: "all 0.25s",
+            }}
+          >
+            {section.category}
+          </button>
+        ))}
+      </motion.div>
+
+      <div style={{ maxWidth: "680px", margin: "0 auto", padding: isMobile ? "0 1.5rem" : "0 2rem" }}>
+        <AnimatePresence mode="wait">
+          <motion.div key={activeCategory} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.35 }}>
+            {MENU_SECTIONS[activeCategory].items.map((item, i) => (
+              <motion.div
+                key={item.name}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.08 }}
+                onMouseEnter={() => !isMobile && setHoveredItem(item.name)}
+                onMouseLeave={() => !isMobile && setHoveredItem(null)}
+                onClick={() => isMobile && setHoveredItem(hoveredItem === item.name ? null : item.name)}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  padding: isMobile ? "1.2rem 0" : "1.5rem 0",
+                  borderBottom: "1px solid rgba(181,180,162,0.12)",
+                  cursor: isMobile ? "pointer" : "default",
+                  position: "relative",
+                }}
+              >
+                <motion.div
+                  animate={{ scaleX: hoveredItem === item.name ? 1 : 0 }}
+                  style={{ position: "absolute", left: -12, top: "50%", translateY: "-50%", width: "3px", height: "60%", backgroundColor: COLORS.goldenGlow, transformOrigin: "top", borderRadius: "2px" }}
+                />
+                <div style={{ flex: 1, paddingRight: isMobile ? "0" : "2rem" }}>
+                  <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? "1.1rem" : "1.25rem", fontWeight: 600, color: hoveredItem === item.name ? COLORS.white : COLORS.ashGrey, margin: 0, transition: "color 0.2s" }}>
+                    {item.name}
+                  </p>
+                  <AnimatePresence>
+                    {hoveredItem === item.name && (
+                      <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
+                        style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.75rem", color: COLORS.ashGrey, margin: "0.35rem 0 0", overflow: "hidden" }}>
+                        {item.desc}
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                  {/* Always show desc on mobile */}
+                  {isMobile && hoveredItem !== item.name && (
+                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.7rem", color: "rgba(181,180,162,0.5)", margin: "0.25rem 0 0" }}>
+                      {item.desc}
+                    </p>
+                  )}
+                  {/* Mobile Sizes/Prices Grid */}
+                  {isMobile && item.prices && (
+                    <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem", flexWrap: "wrap" }}>
+                      {Object.entries(item.prices).map(([size, p]) => (
+                        <span key={size} style={{ fontSize: "0.7rem", color: COLORS.ashGrey, fontFamily: "'DM Sans', sans-serif" }}>
+                          {size} <span style={{ color: COLORS.goldenGlow, fontFamily: "'Cormorant Garamond', serif", fontSize: "0.95rem" }}>${p}</span>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                {/* Desktop Sizes/Prices Grid */}
+                {!isMobile && item.prices && (
+                  <div style={{ display: "flex", gap: "1.5rem", alignItems: "flex-end", flexShrink: 0 }}>
+                    {Object.entries(item.prices).map(([size, p]) => (
+                      <div key={size} style={{ textAlign: "center", minWidth: "30px" }}>
+                        <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.6rem", color: "rgba(181,180,162,0.5)", display: "block", marginBottom: "0.2rem" }}>{size}</span>
+                        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 500, color: hoveredItem === item.name ? COLORS.goldenGlow : COLORS.ashGrey, transition: "color 0.2s" }}>${p}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {/* Single price (both mobile/desktop) */}
+                {item.price && (
+                  <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 500, marginLeft: "1.5rem", paddingTop: "0.1rem", whiteSpace: "nowrap", flexShrink: 0, color: hoveredItem === item.name ? COLORS.goldenGlow : COLORS.ashGrey, transition: "color 0.2s" }}>
+                    {item.price}
+                  </span>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+
+        <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: 0.8 }}
+          style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", color: "rgba(181,180,162,0.4)", textAlign: "center", marginTop: "3rem", letterSpacing: "0.1em" }}>
+          Precios en pesos mexicanos · Ingredientes de temporada pueden variar
+        </motion.p>
+      </div>
+    </section>
+  );
+}
+
+/* ─── SPACE / GALLERY ─── */
+function SpaceSection() {
+  const ref = useRef(null);
+  const isMobile = useIsMobile();
+  const isInView = useInView(ref, { once: true, margin: "-10%" });
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const x = useTransform(scrollYProgress, [0, 1], ["5%", "-30%"]);
+  const smoothX = useSpring(x, { stiffness: 40, damping: 15 });
+
+  return (
+    <section id="space" ref={ref} style={{ backgroundColor: "#0a0a08", padding: isMobile ? "5rem 0" : "8rem 0", overflow: "hidden" }}>
+      <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8 }} style={{ padding: "0 8%", marginBottom: isMobile ? "2rem" : "4rem" }}>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", letterSpacing: "0.3em", color: COLORS.goldenGlow, textTransform: "uppercase", marginBottom: "0.75rem" }}>— El Espacio —</p>
+        <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "flex-end", gap: isMobile ? "1rem" : 0 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? "clamp(2rem, 8vw, 3rem)" : "clamp(2.5rem, 5vw, 4rem)", fontWeight: 700, color: COLORS.white, margin: 0, lineHeight: 1 }}>
+            El Espacio
+          </h2>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.8rem", color: COLORS.ashGrey, maxWidth: "320px", textAlign: isMobile ? "left" : "right", lineHeight: 1.6 }}>
+            Ladrillo expuesto, linternas cálidas, sillas desiguales — un lugar que se siente como sala de estar, porque lo es.
+          </p>
+        </div>
+      </motion.div>
+
+      {isMobile ? (
+        /* Mobile: vertical scrollable gallery */
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem", padding: "0 5%" }}>
+          {GALLERY_ITEMS.map((item, i) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              style={{ borderRadius: "12px", overflow: "hidden", height: "240px", border: "1px solid rgba(181,180,162,0.1)", position: "relative" }}
+            >
+              <div style={{ width: "100%", height: "100%", backgroundColor: i % 2 === 0 ? "#1a1a14" : "#141410",
+                backgroundImage: `url(${item.img})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center" }}>
+              </div>
+              <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "1rem", background: "linear-gradient(to top, rgba(13,12,9,0.85) 0%, transparent 100%)" }}>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.6rem", letterSpacing: "0.2em", color: COLORS.goldenGlow, textTransform: "uppercase", margin: "0 0 0.2rem" }}>0{item.id} / 0{GALLERY_ITEMS.length}</p>
+                <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.2rem", color: COLORS.white, margin: 0, fontWeight: 600 }}>{item.label}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      ) : (
+        /* Desktop: horizontal scroll */
+        <>
+          <motion.div style={{ display: "flex", gap: "1.5rem", paddingLeft: "8%", x: smoothX, width: "max-content" }}>
+            {GALLERY_ITEMS.map((item, i) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.7, delay: i * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+                style={{ position: "relative", borderRadius: "12px", overflow: "hidden", flexShrink: 0, width: item.aspect === "portrait" ? "320px" : "480px", height: "420px", cursor: "pointer", border: "1px solid rgba(181,180,162,0.1)" }}
+              >
+                <div style={{ width: "100%", height: "100%", backgroundColor: i % 2 === 0 ? "#1a1a14" : "#141410",
+                  backgroundImage: `url(${item.img})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center" }}>
+                </div>
+                <motion.div initial={{ opacity: 0 }} whileHover={{ opacity: 1 }}
+                  style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(13,12,9,0.85) 0%, transparent 60%)", display: "flex", alignItems: "flex-end", padding: "1.5rem" }}>
+                  <div>
+                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.6rem", letterSpacing: "0.2em", color: COLORS.goldenGlow, textTransform: "uppercase", margin: "0 0 0.3rem" }}>0{item.id} / 0{GALLERY_ITEMS.length}</p>
+                    <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", color: COLORS.white, margin: 0, fontWeight: 600 }}>{item.label}</p>
+                  </div>
+                </motion.div>
+              </motion.div>
+            ))}
+            <div style={{ width: "8vw", flexShrink: 0 }} />
+          </motion.div>
+          <motion.div style={{ marginTop: "3rem", padding: "0 8%", display: "flex", alignItems: "center", gap: "1rem" }}>
+            <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(181,180,162,0.15)", position: "relative" }}>
+              <motion.div style={{ position: "absolute", top: 0, left: 0, height: "100%", backgroundColor: COLORS.goldenGlow, scaleX: useTransform(scrollYProgress, [0, 0.8], [0, 1]), transformOrigin: "left" }} />
+            </div>
+          </motion.div>
+        </>
+      )}
+    </section>
+  );
+}
+
+/* ─── STORY ─── */
+function StorySection() {
+  const ref = useRef(null);
+  const isMobile = useIsMobile();
+  const isInView = useInView(ref, { once: true, margin: "-15%" });
+  const paragraphVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: (i) => ({ opacity: 1, y: 0, transition: { duration: 0.9, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] } }),
+  };
+
+  return (
+    <section id="story" ref={ref} style={{ backgroundColor: COLORS.pitchBlack, padding: isMobile ? "5rem 0" : "10rem 0", position: "relative", overflow: "hidden" }}>
+      {!isMobile && (
+        <div aria-hidden="true" style={{ position: "absolute", right: "-5%", top: "50%", transform: "translateY(-50%)", fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20rem, 35vw, 40rem)", fontWeight: 700, color: "rgba(228,220,34,0.03)", lineHeight: 1, userSelect: "none", pointerEvents: "none" }}>3</div>
+      )}
+
+      <div style={{ maxWidth: "900px", margin: "0 auto", padding: isMobile ? "0 5%" : "0 8%" }}>
+        <motion.p custom={0} variants={paragraphVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}
+          style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", letterSpacing: "0.3em", color: COLORS.goldenGlow, textTransform: "uppercase", marginBottom: isMobile ? "2rem" : "3rem" }}>
+          — Nuestra Historia —
+        </motion.p>
+
+        <motion.blockquote custom={1} variants={paragraphVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}
+          style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? "clamp(1.5rem, 6vw, 2.2rem)" : "clamp(2rem, 4vw, 3.2rem)", fontWeight: 500, color: COLORS.white, lineHeight: 1.25, margin: isMobile ? "0 0 3rem" : "0 0 4rem", borderLeft: `3px solid ${COLORS.goldenGlow}`, paddingLeft: isMobile ? "1.2rem" : "2rem", fontStyle: "italic" }}>
+          "No abrimos un café. Construimos una sala de estar para personas que se toman su café tan en serio como sus ideas."
+        </motion.blockquote>
+
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? "2rem" : "3rem" }}>
+          {[
+            { title: "El Nombre", body: "TR3Z es trece — la dirección donde comenzamos. Tres líneas horizontales, un número dorado. Una marca tan precisa como nuestras proporciones de extracción." },
+            { title: "El Oficio", body: "Granos de origen único directamente de agricultores en Oaxaca y Chiapas. Tostados semanalmente. Calibrados diariamente. Nos obsesionamos con las variables para que tú no tengas que hacerlo." },
+            { title: "El Espacio", body: "Ladrillo expuesto, sillas disparejas, focos Edison y arte abstracto de artistas locales. Deliberadamente imperfecto — porque la autenticidad no se puede fabricar." },
+            { title: "La Comunidad", body: "Desde los pour-overs de las 7am hasta las sesiones de estudio nocturnas. Cada persona que cruza la puerta merece hospitalidad excepcional, sin excepciones." },
+          ].map((block, i) => (
+            <motion.div key={block.title} custom={i + 2} variants={paragraphVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}>
+              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 700, color: COLORS.goldenGlow, margin: "0 0 0.75rem" }}>{block.title}</h3>
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", color: COLORS.ashGrey, lineHeight: 1.75, margin: 0 }}>{block.body}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div custom={6} variants={paragraphVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}
+          style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", marginTop: isMobile ? "2.5rem" : "4rem" }}>
+          {["Calidad y Oficio", "Autenticidad", "Comunidad", "Accesibilidad", "Experiencia Sensorial"].map((v) => (
+            <span key={v} style={{ padding: "0.4rem 1rem", borderRadius: "9999px", border: "1px solid rgba(228,220,34,0.25)", fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", letterSpacing: "0.12em", color: COLORS.ashGrey, textTransform: "uppercase" }}>{v}</span>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── CONTACT / FOOTER ─── */
+function ContactSection() {
+  const ref = useRef(null);
+  const isMobile = useIsMobile();
+  const isInView = useInView(ref, { once: true, margin: "-10%" });
+
+  return (
+    <section id="contact" ref={ref} style={{ backgroundColor: "#080807", padding: isMobile ? "5rem 0 0" : "8rem 0 0", position: "relative", overflow: "hidden" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: isMobile ? "0 5%" : "0 8%" }}>
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8 }} style={{ marginBottom: isMobile ? "3rem" : "5rem" }}>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", letterSpacing: "0.3em", color: COLORS.goldenGlow, textTransform: "uppercase", marginBottom: "1rem" }}>— Encuéntranos —</p>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: isMobile ? "clamp(1.8rem, 7vw, 2.5rem)" : "clamp(2.2rem, 4vw, 3.5rem)", fontWeight: 700, color: COLORS.white, margin: 0, lineHeight: 1.1 }}>
+            Disfruta un momento<br />
+            <span style={{ color: COLORS.goldenGlow, fontStyle: "italic" }}>con nosotros</span>
+          </h2>
+        </motion.div>
+
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1.5fr", gap: isMobile ? "2rem" : "4rem", alignItems: "start" }}>
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.8, delay: 0.2 }}>
+            {[
+              { 
+                label: "¡Sigue nuestras redes sociales!", 
+                links: [
+                  { name: "Instagram", url: "https://www.instagram.com/tr3zcafe/" },
+                  { name: "Facebook", url: "https://www.facebook.com/tr3zcafe" }
+                ]
+              },
+              { label: "Horario", value: "Lun–Vie: 7:00am – 9:00pm\nSáb–Dom: 8:00am – 10:00pm" },
+              { label: "Teléfono", value: "686.216.7652" }
+            ].map((info, i) => (
+              <motion.div key={info.label} initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 + i * 0.1 }} style={{ marginBottom: "2rem" }}>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.6rem", letterSpacing: "0.2em", color: COLORS.goldenGlow, textTransform: "uppercase", margin: "0 0 0.4rem" }}>{info.label}</p>
+                {info.links ? (
+                  <div style={{ display: "flex", gap: "1.5rem" }}>
+                    {info.links.map(link => (
+                      <a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.2rem", color: COLORS.white, margin: 0, lineHeight: 1.5, textDecoration: "none", transition: "color 0.2s" }}
+                        onMouseEnter={(e) => (e.target.style.color = COLORS.goldenGlow)}
+                        onMouseLeave={(e) => (e.target.style.color = COLORS.white)}
+                      >
+                        {link.name}
+                      </a>
+                    ))}
+                  </div>
+                ) : info.link ? (
+                  <a href={info.link} target="_blank" rel="noopener noreferrer" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", color: COLORS.white, margin: 0, lineHeight: 1.5, whiteSpace: "pre-line", textDecoration: "none", transition: "color 0.2s" }}
+                    onMouseEnter={(e) => (e.target.style.color = COLORS.goldenGlow)}
+                    onMouseLeave={(e) => (e.target.style.color = COLORS.white)}
+                  >
+                    {info.value}
+                  </a>
+                ) : (
+                  <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", color: COLORS.white, margin: 0, lineHeight: 1.5, whiteSpace: "pre-line" }}>{info.value}</p>
+                )}
+              </motion.div>
+            ))}
+            <a
+              href="https://wa.me/5216862167652"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-block",
+                marginTop: "1rem",
+                padding: "0.9rem 2.2rem",
+                borderRadius: "9999px",
+                border: `1.5px solid ${COLORS.goldenGlow}`,
+                color: COLORS.goldenGlow,
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "0.75rem",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+                cursor: "pointer",
+                transition: "background-color 0.3s, color 0.3s",
+              }}
+              onMouseEnter={(e) => { e.target.style.backgroundColor = COLORS.goldenGlow; e.target.style.color = COLORS.pitchBlack; }}
+              onMouseLeave={(e) => { e.target.style.backgroundColor = "transparent"; e.target.style.color = COLORS.goldenGlow; }}
+            >
+              Reservar por WhatsApp
+            </a>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={isInView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 0.8, delay: 0.3 }}
+            style={{ borderRadius: "16px", overflow: "hidden", height: isMobile ? "260px" : "380px", border: "1px solid rgba(228,220,34,0.15)", position: "relative" }}>
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3359.2543918958627!2d-115.4419404246365!3d32.65267389033083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80d770101af0912f%3A0x43fbe536b2909e4e!2sCaf%C3%A9%20Tr3z!5e0!3m2!1sen!2smx!4v1774719404482!5m2!1sen!2smx" 
+              width="100%" 
+              height="100%" 
+              style={{ border: 0 }} 
+              allowFullScreen="" 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div style={{
+        marginTop: isMobile ? "3rem" : "6rem",
+        padding: isMobile ? "1.5rem 5%" : "2rem 8%",
+        borderTop: "1px solid rgba(181,180,162,0.1)",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        flexWrap: "wrap",
+        gap: "1rem",
+        flexDirection: isMobile ? "column" : "row",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+            <div style={{ height: "2.5px", width: "16px", backgroundColor: COLORS.goldenGlow, borderRadius: "2px" }} />
+            <div style={{ height: "2.5px", width: "11px", backgroundColor: COLORS.goldenGlow, borderRadius: "2px", marginLeft: "5px" }} />
+            <div style={{ height: "2.5px", width: "16px", backgroundColor: COLORS.goldenGlow, borderRadius: "2px" }} />
+          </div>
+          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 700, color: COLORS.white, marginLeft: "0.5rem", fontSize: "0.9rem" }}>
+            Café TR<span style={{ color: COLORS.goldenGlow, display: "inline-block", transform: "translateY(-0.24em)" }}>3</span>Z
+          </span>
+        </div>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.6rem", color: "rgba(181,180,162,0.35)", letterSpacing: "0.1em", margin: 0, textAlign: "center" }}>
+          © {new Date().getFullYear()} Café Tr3z · Mexicali, B.C., México · Todos los derechos reservados
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ─── ROOT ─── */
+export default function CafeTr3z() {
+  return (
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap');
+        
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+          background-color: #0D0C09;
+          color: #FEFEFE;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          overflow-x: hidden;
+        }
+
+        ::selection {
+          background-color: rgba(228,220,34,0.3);
+          color: #FEFEFE;
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0D0C09; }
+        ::-webkit-scrollbar-thumb { background: #46420C; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #E4DC22; }
+
+        /* Accessibility: respect reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+          }
+        }
+
+        /* Focus states for keyboard navigation */
+        a:focus-visible, button:focus-visible {
+          outline: 2px solid #E4DC22;
+          outline-offset: 3px;
+          border-radius: 4px;
+        }
+      `}</style>
+
+      <GrainOverlay />
+      <FloatingNav />
+
+      <main>
+        <HeroSection />
+        <StorySection />
+        <MenuSection />
+        <SpaceSection />
+        <DeliverySection />
+        <ContactSection />
+      </main>
+    </>
+  );
+}
