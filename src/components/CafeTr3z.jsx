@@ -419,7 +419,7 @@ function HeroSection() {
         display: "flex",
         alignItems: isMobile ? "flex-start" : "center",
         justifyContent: "center",
-        paddingTop: isMobile ? "18vh" : 0,
+        paddingTop: isMobile ? "12vh" : 0,
       }}
     >
       <motion.div
@@ -444,9 +444,9 @@ function HeroSection() {
           justifyContent: "center",
           width: "100%",
           maxWidth: "1200px",
-          gap: isMobile ? "2rem" : "6vw",
+          gap: isMobile ? "1.5rem" : "6vw",
           padding: "0 5%",
-          marginTop: isMobile ? "8vh" : 0,
+          marginTop: isMobile ? "4vh" : 0,
         }}
       >
         {/* Hero Text */}
@@ -600,7 +600,7 @@ function HeroSection() {
           animate={{ opacity: isMobile ? 0.55 : 1, y: 0, scale: 1 }}
           transition={{ duration: 1.2, delay: 1.6, ease: [0.16, 1, 0.3, 1] }}
           style={{ 
-            width: isMobile ? "75vw" : "min(40vw, 550px)", 
+            width: isMobile ? "min(68vw, 320px)" : "min(40vw, 550px)", 
             aspectRatio: "1",
             rotate: isMobile ? -2 : 0,
           }}
