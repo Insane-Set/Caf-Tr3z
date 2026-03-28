@@ -434,6 +434,85 @@ function HeroSection() {
         }}
       />
 
+      {/* Animated Background Shapes */}
+      {/* 1. Organic rotating blob line */}
+      <motion.div
+        animate={{
+          rotate: [0, 360],
+          borderRadius: [
+            "60% 40% 30% 70% / 60% 30% 70% 40%",
+            "30% 60% 70% 40% / 50% 60% 30% 60%",
+            "60% 40% 30% 70% / 60% 30% 70% 40%",
+          ],
+        }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+        style={{
+          position: "absolute",
+          top: "10%",
+          left: isMobile ? "-20%" : "15%",
+          width: isMobile ? "80vw" : "35vw",
+          height: isMobile ? "80vw" : "35vw",
+          minWidth: "350px",
+          minHeight: "350px",
+          border: `1.5px solid rgba(228,220,34,0.12)`,
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* 2. Abstract dashed halo behind cup */}
+      <motion.div
+        animate={{
+          scale: [0.95, 1.05, 0.95],
+          rotate: [0, 180, 360],
+        }}
+        transition={{
+          scale: { duration: 12, repeat: Infinity, ease: "easeInOut" },
+          rotate: { duration: 40, repeat: Infinity, ease: "linear" },
+        }}
+        style={{
+          position: "absolute",
+          bottom: "-5%",
+          right: isMobile ? "-10%" : "5%",
+          width: isMobile ? "120vw" : "55vw",
+          height: isMobile ? "120vw" : "55vw",
+          minWidth: "400px",
+          minHeight: "400px",
+          border: `1px dashed rgba(255,255,255,0.08)`,
+          borderRadius: "50%",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* 3. Floating glowing orb */}
+      <motion.div
+        animate={{
+          x: ["0vw", "8vw", "0vw"],
+          y: ["0vh", "-8vh", "0vh"],
+          opacity: [0.1, 0.3, 0.1],
+        }}
+        transition={{
+          duration: 18,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        style={{
+          position: "absolute",
+          top: "25%",
+          right: "25%",
+          width: "400px",
+          height: "400px",
+          background: "radial-gradient(circle, rgba(228,220,34,0.12) 0%, transparent 70%)",
+          borderRadius: "50%",
+          filter: "blur(40px)",
+          pointerEvents: "none",
+        }}
+      />
+
+
       <div
         style={{
           position: "relative",
@@ -612,7 +691,7 @@ function HeroSection() {
               width: "100%", 
               height: "100%", 
               objectFit: "contain", 
-              filter: "drop-shadow(0 40px 80px rgba(228,220,34,0.15))" 
+              filter: "drop-shadow(0 30px 40px rgba(228,220,34,0.4)) drop-shadow(0 0 60px rgba(228,220,34,0.25))" 
             }} 
           />
         </motion.div>
