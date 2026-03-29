@@ -713,24 +713,12 @@ function DeliverySection() {
           {
             appName: "Rappi",
             url: "https://www.rappi.com.mx/restaurantes/1923801310-cafe-tr3z",
-            rating: "4.9 (200+)",
-            time: "15 — 25 min",
-            fee: "Calculado al pedir",
             delay: 0,
-            deliveryIcon: (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11h12z"></path><path d="M14 8h5l3 5v5h-8"></path><circle cx="6.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-            )
           },
           {
             appName: "DiDi Food",
             url: "https://web.didiglobal.com/mx/food/mexicali-bcn/cafe-tr3z/5764607643247968488/",
-            rating: "4.8 (150+)",
-            time: "20 — 30 min",
-            fee: "$0",
             delay: 0.2,
-            deliveryIcon: (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11h12z"></path><path d="M14 8h5l3 5v5h-8"></path><circle cx="6.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-            )
           }
         ].map((app, i) => (
           <motion.a 
@@ -744,82 +732,109 @@ function DeliverySection() {
             whileTap={{ scale: 0.98 }}
             viewport={{ once: true, margin: "-10%" }}
             variants={{
-              rest: { opacity: 0, y: 30, scale: 1, borderColor: "rgba(181,180,162,0.15)", boxShadow: "0 0px 0px rgba(0,0,0,0)" },
-              show: { opacity: 1, y: 0, scale: 1, borderColor: "rgba(181,180,162,0.15)", boxShadow: "0 0px 0px rgba(0,0,0,0)", transition: { duration: 0.6, delay: app.delay } },
-              hover: { opacity: 1, y: 0, scale: 1.02, borderColor: COLORS.goldenGlow, boxShadow: `0 10px 40px rgba(228,220,34,0.15)`, transition: { duration: 0.3 } }
+              rest: { opacity: 0, y: 30, scale: 1 },
+              show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, delay: app.delay } },
+              hover: { opacity: 1, y: 0, scale: 1.02, transition: { duration: 0.3 } }
             }}
             style={{
               flex: 1,
               position: "relative",
-              borderRadius: "20px",
-              border: "1px solid rgba(181,180,162,0.15)",
+              borderRadius: "16px",
+              border: `1px solid rgba(228,220,34, 0.15)`,
               backgroundColor: "#12120e",
               textDecoration: "none",
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
+              justifyContent: "space-between",
               cursor: "pointer",
-              minHeight: "340px",
+              padding: "3rem 2.5rem",
+              minHeight: "220px",
             }}
           >
-            {/* App brand header */}
-            <div style={{ padding: "1.2rem 1.5rem", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: "rgba(255,255,255,0.02)", zIndex: 2 }}>
-              <span style={{ fontFamily: "system-ui, -apple-system, sans-serif", fontSize: "1.5rem", fontWeight: 900, fontStyle: app.appName === "Rappi" ? "italic" : "normal", color: "#ececec", letterSpacing: app.appName === "DiDi Food" ? "-1px" : "normal" }}>
-                {app.appName}
-              </span>
-              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", color: COLORS.ashGrey, letterSpacing: "0.1em", textTransform: "uppercase" }}>Entrega</span>
-            </div>
-
-            {/* Hero Image Mockup Area */}
-            <div style={{ position: "relative", height: "135px", backgroundColor: "#080807", backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(228,220,34,0.02) 10px, rgba(228,220,34,0.02) 20px)`, zIndex: 1 }}>
-              <div style={{ position: "absolute", bottom: "1rem", left: "1.5rem" }}>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "2.2rem", color: COLORS.white, margin: 0, fontWeight: 700, textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>Café Tr3z</h3>
-              </div>
-            </div>
-
-            {/* Details Area */}
-            <div style={{ padding: "1.5rem", flex: 1, display: "flex", flexDirection: "column", gap: "1rem", zIndex: 2 }}>
-              {/* Rating and Time line */}
-              <div style={{ display: "flex", gap: "1.2rem", alignItems: "center" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", color: COLORS.white, fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", fontWeight: 600 }}>
-                  <span style={{ color: COLORS.goldenGlow }}>★</span> {app.rating}
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: COLORS.ashGrey, fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem" }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                  {app.time}
-                </div>
-              </div>
-
-              {/* Cost tag */}
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: COLORS.goldenGlow, fontFamily: "'DM Sans', sans-serif", fontSize: "0.8rem", fontWeight: 500, backgroundColor: "rgba(228,220,34,0.1)", padding: "0.5rem 0.8rem", borderRadius: "8px", alignSelf: "flex-start", marginTop: "0.5rem" }}>
-                {app.deliveryIcon}
-                Envío: {app.fee}
-              </div>
-            </div>
-
-            {/* Floating Order Button (animates up on hover) */}
+            {/* Ambient inner glow on hover */}
             <motion.div 
               variants={{
-                rest: { y: "120%", opacity: 0 },
-                show: { y: "120%", opacity: 0 },
-                hover: { y: "0%", opacity: 1, transition: { type: "spring", stiffness: 300, damping: 20 } }
+                rest: { opacity: 0 },
+                hover: { opacity: 1, transition: { duration: 0.4 } }
               }}
-              style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                padding: "2rem 1.5rem 1.5rem",
-                background: `linear-gradient(to top, #12120e 70%, transparent)`,
-                display: "flex",
-                justifyContent: "center",
-                zIndex: 3
-              }}
-            >
-              <div style={{ backgroundColor: COLORS.goldenGlow, color: COLORS.pitchBlack, padding: "0.8rem 2rem", borderRadius: "99px", fontFamily: "'DM Sans', sans-serif", fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", width: "100%", textAlign: "center", boxShadow: "0 4px 15px rgba(228,220,34,0.3)" }}>
-                Pedir en {app.appName} →
+              style={{ position: "absolute", inset: 0, border: `2px solid ${COLORS.goldenGlow}`, borderRadius: "16px", boxShadow: `inset 0 0 50px rgba(228,220,34,0.1), 0 10px 30px rgba(0,0,0,0.5)`, pointerEvents: "none", zIndex: 0 }}
+            />
+
+            {/* Top Details */}
+            <div style={{ zIndex: 2 }}>
+              <div style={{ color: COLORS.goldenGlow, fontSize: "0.75rem", letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif", marginBottom: "0.75rem" }}>
+                Entrega Rápida
               </div>
-            </motion.div>
+              <h3 style={{ fontFamily: "system-ui, -apple-system, sans-serif", fontSize: "2.8rem", color: COLORS.white, margin: 0, fontWeight: 900, fontStyle: app.appName === "Rappi" ? "italic" : "normal", letterSpacing: app.appName === "DiDi Food" ? "-1.5px" : "normal" }}>
+                {app.appName}
+              </h3>
+            </div>
+
+            {/* Bottom Animation Track Area */}
+            <div style={{ position: "relative", marginTop: "4rem", height: "45px", display: "flex", alignItems: "center", zIndex: 2 }}>
+              
+              {/* Revealed Text */}
+              <motion.div 
+                variants={{
+                  rest: { opacity: 0, x: -10, filter: "blur(4px)" },
+                  hover: { opacity: 1, x: 0, filter: "blur(0px)", transition: { delay: 0.15, duration: 0.4, ease: "easeOut" } }
+                }}
+                style={{ 
+                  color: COLORS.goldenGlow, 
+                  fontFamily: "'DM Sans', sans-serif", 
+                  fontSize: "1rem", 
+                  fontWeight: 700, 
+                  letterSpacing: "0.05em",
+                  position: "absolute",
+                  left: 0
+                }}
+              >
+                Pedir {app.appName} →
+              </motion.div>
+
+              {/* The animating Motorcycle */}
+              <motion.div
+                variants={{
+                  rest: { x: 0 },
+                  hover: { x: (typeof window !== 'undefined' && window.innerWidth < 768) ? 350 : 450, transition: { type: "tween", ease: "easeInOut", duration: 0.8 } }
+                }}
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  color: COLORS.goldenGlow,
+                  display: "flex",
+                  alignItems: "center"
+                }}
+              >
+                {/* Motion Lines (Wind) */}
+                <motion.div 
+                  variants={{
+                    rest: { opacity: 0, scaleX: 0 },
+                    hover: { opacity: [0, 1, 0], scaleX: [0, 1.5, 0], transition: { duration: 0.5, delay: 0.1, repeat: 1 } }
+                  }}
+                  style={{ position: "absolute", left: -30, display: "flex", flexDirection: "column", gap: "4px", transformOrigin: "right" }}
+                >
+                  <div style={{ height: "2px", width: "20px", backgroundColor: COLORS.goldenGlow, borderRadius: "2px" }} />
+                  <div style={{ height: "2px", width: "12px", backgroundColor: COLORS.goldenGlow, borderRadius: "2px", marginLeft: "8px" }} />
+                </motion.div>
+
+                {/* SVG Scooter */}
+                <svg width="45" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.5))" }}>
+                  <circle cx="6" cy="16" r="3" />
+                  <circle cx="18" cy="16" r="3" />
+                  <path d="M2 13h2" />
+                  <path d="M14 13h-4V7a2 2 0 00-2-2H5" />
+                  <path d="M14 13l2-4h3l2 4" />
+                  {/* Delivery Box */}
+                  <rect x="2" y="5" width="6" height="6" rx="1" />
+                  <path d="M18 9h3" />
+                </svg>
+              </motion.div>
+
+              {/* Dotted road under motorcycle */}
+              <div style={{ position: "absolute", bottom: -2, left: 0, right: 0, height: "1.5px", backgroundImage: `repeating-linear-gradient(to right, rgba(228,220,34,0.3) 0, rgba(228,220,34,0.3) 6px, transparent 6px, transparent 16px)` }} />
+            </div>
           </motion.a>
         ))}
       </div>
