@@ -473,7 +473,7 @@ function HeroSection() {
             left: bean.left,
             right: bean.right,
             bottom: bean.bottom,
-            zIndex: i % 3 === 0 ? 15 : 1,
+            zIndex: i % 3 === 0 ? 5 : 1,
             pointerEvents: "none",
             width: bean.size,
             height: bean.size,
@@ -496,7 +496,7 @@ function HeroSection() {
       <div style={{ position: "relative", zIndex: 10, width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
 
         {/* "CAFÉ" — top-left area */}
-        <div style={{ overflow: "hidden", position: "absolute", top: isMobile ? "12%" : "15%", left: isMobile ? "6%" : "15%", zIndex: 12 }}>
+        <div style={{ overflow: "hidden", position: "absolute", top: isMobile ? "18%" : "15%", left: isMobile ? "6%" : "15%", zIndex: 12 }}>
           <motion.h1
             initial={{ y: "110%" }}
             animate={{ y: 0 }}
@@ -516,7 +516,7 @@ function HeroSection() {
         </div>
 
         {/* "TR3Z" — right of center */}
-        <div style={{ overflow: "hidden", position: "absolute", top: isMobile ? "auto" : "36%", bottom: isMobile ? "32%" : "auto", right: isMobile ? "6%" : "15%", zIndex: 12 }}>
+        <div style={{ overflow: "hidden", position: "absolute", top: isMobile ? "auto" : "36%", bottom: isMobile ? "28%" : "auto", right: isMobile ? "6%" : "15%", zIndex: 12 }}>
           <motion.h1
             initial={{ y: "110%" }}
             animate={{ y: 0 }}
