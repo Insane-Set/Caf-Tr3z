@@ -695,24 +695,52 @@ function DeliverySection() {
       appName: "Rappi",
       url: "https://www.rappi.com.mx/restaurantes/1923801310-cafe-tr3z",
       tagline: "Llega directo a tu puerta",
-      slideFrom: "left",
     },
     {
       appName: "DiDi Food",
       url: "https://web.didiglobal.com/mx/food/mexicali-bcn/cafe-tr3z/5764607643247968488/",
       tagline: "Ordena fácil y rápido",
-      slideFrom: "right",
     },
   ];
 
   return (
-    <section id="delivery" ref={sectionRef} style={{ backgroundColor: COLORS.pitchBlack, position: "relative", overflow: "hidden" }}>
+    <section id="delivery" ref={sectionRef} style={{ backgroundColor: COLORS.pitchBlack, padding: isMobile ? "5rem 6%" : "8rem 10%", position: "relative" }}>
+      {/* Neon flicker keyframes — injected once */}
+      <style>{`
+        @keyframes neonFlicker {
+          0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+            opacity: 1;
+            text-shadow:
+              0 0 7px rgba(228,220,34,0.7),
+              0 0 20px rgba(228,220,34,0.5),
+              0 0 40px rgba(228,220,34,0.3),
+              0 0 80px rgba(228,220,34,0.15);
+          }
+          20%, 24%, 55% {
+            opacity: 0.4;
+            text-shadow: none;
+          }
+        }
+        @keyframes neonPulse {
+          0%, 100% {
+            box-shadow: 0 0 8px rgba(228,220,34,0.4), 0 0 20px rgba(228,220,34,0.2);
+          }
+          50% {
+            box-shadow: 0 0 15px rgba(228,220,34,0.6), 0 0 40px rgba(228,220,34,0.3);
+          }
+        }
+        @keyframes ambientGlow {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
+
       {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8 }}
-        style={{ textAlign: "center", padding: isMobile ? "5rem 6% 2.5rem" : "8rem 10% 4rem" }}
+        style={{ textAlign: "center", marginBottom: isMobile ? "3rem" : "5rem" }}
       >
         <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", letterSpacing: "0.3em", color: COLORS.goldenGlow, textTransform: "uppercase", marginBottom: "1rem" }}>
           — Lleva Café Tr3z Contigo —
@@ -722,215 +750,167 @@ function DeliverySection() {
         </h2>
       </motion.div>
 
-      {/* Split Screen Container */}
-      <div style={{
-        display: "flex",
-        flexDirection: isMobile ? "column" : "row",
-        width: "100%",
-        position: "relative",
-      }}>
-        {/* Center Divider (desktop only) */}
-        {!isMobile && (
-          <motion.div
-            initial={{ scaleY: 0 }}
-            animate={isInView ? { scaleY: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-            style={{
-              position: "absolute",
-              top: 0,
-              bottom: 0,
-              left: "50%",
-              width: "2px",
-              background: `linear-gradient(to bottom, transparent, ${COLORS.goldenGlow}, transparent)`,
-              zIndex: 10,
-              transformOrigin: "top",
-              boxShadow: `0 0 15px rgba(228,220,34,0.4)`,
-            }}
-          />
-        )}
-
+      {/* Cards */}
+      <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: "2rem", justifyContent: "center", maxWidth: "850px", margin: "0 auto", position: "relative", zIndex: 1 }}>
         {apps.map((app, i) => (
           <motion.a
             key={app.appName}
             href={app.url}
             target="_blank"
             rel="noopener noreferrer"
-            initial={{
-              opacity: 0,
-              x: isMobile
-                ? (app.slideFrom === "left" ? -60 : 60)
-                : (app.slideFrom === "left" ? -120 : 120),
-            }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.9, delay: i * 0.2, ease: [0.22, 1, 0.36, 1] }}
-            whileHover={{ backgroundColor: "rgba(228,220,34,0.03)" }}
-            whileTap={{ scale: 0.99 }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: i * 0.25 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             style={{
               flex: 1,
               position: "relative",
+              borderRadius: "16px",
+              border: "1px solid rgba(181,180,162,0.1)",
+              backgroundColor: "#0d0d0a",
               textDecoration: "none",
-              cursor: "pointer",
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
-              justifyContent: "flex-end",
-              minHeight: isMobile ? "280px" : "420px",
-              padding: isMobile ? "2.5rem 8%" : "3.5rem 5%",
-              backgroundColor: i === 0 ? "#0c0c09" : "#0e0e0a",
-              borderTop: isMobile && i === 1 ? `1px solid rgba(228,220,34,0.15)` : "none",
-              transition: "background-color 0.4s ease",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              minHeight: isMobile ? "300px" : "360px",
+              padding: isMobile ? "3rem 2rem" : "4rem 2.5rem",
+              transition: "border-color 0.3s ease",
             }}
           >
-            {/* Diagonal stripe pattern background */}
+            {/* Brick Wall Texture Background */}
             <div aria-hidden="true" style={{
               position: "absolute",
               inset: 0,
-              backgroundImage: i === 0
-                ? `repeating-linear-gradient(135deg, transparent, transparent 20px, rgba(228,220,34,0.02) 20px, rgba(228,220,34,0.02) 21px)`
-                : `repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(228,220,34,0.02) 20px, rgba(228,220,34,0.02) 21px)`,
               zIndex: 0,
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='42' height='44' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b5b4a2' fill-opacity='0.04'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
             }} />
 
-            {/* Giant Watermark Typography */}
+            {/* Dark vignette over bricks */}
+            <div aria-hidden="true" style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 1,
+              background: "radial-gradient(ellipse at center, rgba(13,13,10,0.3) 0%, rgba(13,13,10,0.85) 100%)",
+              pointerEvents: "none",
+            }} />
+
+            {/* Ambient light glow behind neon sign */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ duration: 1.2, delay: 0.4 + i * 0.2 }}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ delay: i * 0.25 + 1.2, duration: 0.8 }}
               aria-hidden="true"
               style={{
                 position: "absolute",
-                top: "50%",
-                left: i === 0 ? "50%" : "50%",
+                top: "35%",
+                left: "50%",
                 transform: "translate(-50%, -50%)",
-                fontFamily: "system-ui, -apple-system, sans-serif",
-                fontSize: isMobile ? "6rem" : "10rem",
-                fontWeight: 900,
-                fontStyle: app.appName === "Rappi" ? "italic" : "normal",
-                letterSpacing: app.appName === "DiDi Food" ? "-4px" : "normal",
-                color: "transparent",
-                WebkitTextStroke: `1.5px rgba(228,220,34,0.06)`,
-                whiteSpace: "nowrap",
+                width: isMobile ? "200px" : "280px",
+                height: isMobile ? "120px" : "160px",
+                borderRadius: "50%",
+                background: "radial-gradient(ellipse, rgba(228,220,34,0.12) 0%, transparent 70%)",
+                animation: "ambientGlow 3s ease-in-out infinite",
+                zIndex: 2,
                 pointerEvents: "none",
-                zIndex: 1,
-                userSelect: "none",
-                lineHeight: 1,
-              }}
-            >
-              {app.appName}
-            </motion.div>
-
-            {/* Content */}
-            <div style={{ position: "relative", zIndex: 2 }}>
-              {/* Eyebrow */}
-              <motion.p
-                initial={{ opacity: 0, y: 15 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.5 + i * 0.2, duration: 0.6 }}
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: "0.65rem",
-                  letterSpacing: "0.25em",
-                  textTransform: "uppercase",
-                  color: COLORS.goldenGlow,
-                  marginBottom: "1rem",
-                }}
-              >
-                {i === 0 ? "— Entrega Rápida —" : "— Pide Fácil —"}
-              </motion.p>
-
-              {/* App Name */}
-              <motion.h3
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.6 + i * 0.2, duration: 0.6 }}
-                style={{
-                  fontFamily: "system-ui, -apple-system, sans-serif",
-                  fontSize: isMobile ? "3rem" : "3.8rem",
-                  color: COLORS.white,
-                  margin: 0,
-                  fontWeight: 900,
-                  fontStyle: app.appName === "Rappi" ? "italic" : "normal",
-                  letterSpacing: app.appName === "DiDi Food" ? "-2px" : "normal",
-                  lineHeight: 1,
-                  textShadow: "0 2px 20px rgba(0,0,0,0.6)",
-                }}
-              >
-                {app.appName}
-              </motion.h3>
-
-              {/* Tagline */}
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : {}}
-                transition={{ delay: 0.8 + i * 0.2, duration: 0.6 }}
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: "0.9rem",
-                  color: COLORS.ashGrey,
-                  margin: "0.8rem 0 0",
-                  letterSpacing: "0.02em",
-                }}
-              >
-                {app.tagline}
-              </motion.p>
-
-              {/* CTA Button */}
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 1 + i * 0.2, duration: 0.5 }}
-                style={{ marginTop: "2rem" }}
-              >
-                <div
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.6rem",
-                    backgroundColor: COLORS.goldenGlow,
-                    color: COLORS.pitchBlack,
-                    padding: "0.85rem 2rem",
-                    borderRadius: "99px",
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: "0.75rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.12em",
-                    textTransform: "uppercase",
-                    boxShadow: "0 4px 25px rgba(228,220,34,0.3)",
-                    transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "scale(1.05)";
-                    e.currentTarget.style.boxShadow = "0 6px 30px rgba(228,220,34,0.45)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "scale(1)";
-                    e.currentTarget.style.boxShadow = "0 4px 25px rgba(228,220,34,0.3)";
-                  }}
-                >
-                  Pedir en {app.appName}
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-                  </svg>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Bottom accent line */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={isInView ? { scaleX: 1 } : {}}
-              transition={{ delay: 1.2 + i * 0.2, duration: 0.8, ease: "easeOut" }}
-              style={{
-                position: "absolute",
-                bottom: 0,
-                left: i === 0 ? 0 : "auto",
-                right: i === 1 ? 0 : "auto",
-                width: "40%",
-                height: "2px",
-                background: `linear-gradient(${i === 0 ? "to right" : "to left"}, ${COLORS.goldenGlow}, transparent)`,
-                transformOrigin: i === 0 ? "left" : "right",
               }}
             />
+
+            {/* Neon Sign Text */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ delay: i * 0.25 + 0.8, duration: 0.1 }}
+              style={{
+                position: "relative",
+                zIndex: 3,
+                textAlign: "center",
+                animation: isInView ? `neonFlicker ${1.5 + i * 0.3}s ease-in-out 1` : "none",
+                animationDelay: `${i * 0.25 + 0.8}s`,
+                animationFillMode: "forwards",
+              }}
+            >
+              <h3 style={{
+                fontFamily: "system-ui, -apple-system, sans-serif",
+                fontSize: isMobile ? "3rem" : "4rem",
+                fontWeight: 900,
+                fontStyle: app.appName === "Rappi" ? "italic" : "normal",
+                letterSpacing: app.appName === "DiDi Food" ? "-2px" : "normal",
+                color: COLORS.goldenGlow,
+                margin: 0,
+                lineHeight: 1,
+                textShadow: `
+                  0 0 7px rgba(228,220,34,0.7),
+                  0 0 20px rgba(228,220,34,0.5),
+                  0 0 40px rgba(228,220,34,0.3),
+                  0 0 80px rgba(228,220,34,0.15)
+                `,
+              }}>
+                {app.appName}
+              </h3>
+            </motion.div>
+
+            {/* Tagline */}
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: i * 0.25 + 1.5, duration: 0.5 }}
+              style={{
+                position: "relative",
+                zIndex: 3,
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "0.85rem",
+                color: COLORS.ashGrey,
+                margin: "1.2rem 0 0",
+                letterSpacing: "0.03em",
+                textAlign: "center",
+              }}
+            >
+              {app.tagline}
+            </motion.p>
+
+            {/* Pulsing CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: i * 0.25 + 1.8, duration: 0.5 }}
+              style={{ position: "relative", zIndex: 3, marginTop: "2rem" }}
+            >
+              <div style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                backgroundColor: "transparent",
+                color: COLORS.goldenGlow,
+                padding: "0.75rem 2rem",
+                borderRadius: "99px",
+                border: `1.5px solid ${COLORS.goldenGlow}`,
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "0.7rem",
+                fontWeight: 700,
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                animation: "neonPulse 2.5s ease-in-out infinite",
+                transition: "all 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = COLORS.goldenGlow;
+                e.currentTarget.style.color = COLORS.pitchBlack;
+                e.currentTarget.style.transform = "scale(1.05)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "transparent";
+                e.currentTarget.style.color = COLORS.goldenGlow;
+                e.currentTarget.style.transform = "scale(1)";
+              }}
+              >
+                Pedir Ahora
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </div>
+            </motion.div>
           </motion.a>
         ))}
       </div>
