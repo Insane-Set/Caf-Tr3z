@@ -1116,9 +1116,8 @@ function SpaceSection() {
   const ref = useRef(null);
   const isMobile = useIsMobile();
   const isInView = useInView(ref, { once: true, margin: "-10%" });
+  const carouselRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const x = useTransform(scrollYProgress, [0, 1], ["5%", "-30%"]);
-  const smoothX = useSpring(x, { stiffness: 40, damping: 15 });
 
   return (
     <section id="space" ref={ref} style={{ backgroundColor: COLORS.pitchBlack, padding: isMobile ? "5rem 0" : "8rem 0", overflow: "hidden", position: "relative" }}>
@@ -1164,8 +1163,13 @@ function SpaceSection() {
       ) : (
         /* Desktop: horizontal scroll */
         <>
-          <motion.div style={{ display: "flex", gap: "1.5rem", paddingLeft: "8%", x: smoothX, width: "max-content" }}>
-            {GALLERY_ITEMS.map((item, i) => (
+          <motion.div 
+            ref={carouselRef} 
+            style={{ overflow: "hidden", cursor: "grab", paddingBottom: "1rem" }}
+            whileTap={{ cursor: "grabbing" }}
+          >
+            <motion.div drag="x" dragConstraints={carouselRef} style={{ display: "flex", gap: "1.5rem", paddingLeft: "8%", paddingRight: "8%", width: "max-content" }}>
+              {GALLERY_ITEMS.map((item, i) => (
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -1188,7 +1192,7 @@ function SpaceSection() {
                 </motion.div>
               </motion.div>
             ))}
-            <div style={{ width: "8vw", flexShrink: 0 }} />
+            </motion.div>
           </motion.div>
           <motion.div style={{ marginTop: "3rem", padding: "0 8%", display: "flex", alignItems: "center", gap: "1rem" }}>
             <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(181,180,162,0.15)", position: "relative" }}>
