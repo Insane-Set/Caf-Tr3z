@@ -22,6 +22,21 @@ import spaceDetalleImg from "../assets/space-detalle.jpg";
 import spaceHorasImg from "../assets/space-horas.jpg";
 import spaceComunidadImg from "../assets/space-comunidad.jpg";
 
+import bean1Img from "../assets/beans/bean1.png";
+import bean2Img from "../assets/beans/bean2.png";
+import bean3Img from "../assets/beans/bean3.png";
+import bean4Img from "../assets/beans/bean4.png";
+import bean5Img from "../assets/beans/bean5.png";
+import bean6Img from "../assets/beans/bean6.png";
+import bean7Img from "../assets/beans/bean7.png";
+import bean8Img from "../assets/beans/bean8.png";
+import bean9Img from "../assets/beans/bean9.png";
+import bean10Img from "../assets/beans/bean10.png";
+import bean11Img from "../assets/beans/bean11.png";
+import bean12Img from "../assets/beans/bean12.png";
+
+const BEAN_IMAGES = [bean1Img, bean2Img, bean3Img, bean4Img, bean5Img, bean6Img, bean7Img, bean8Img, bean9Img, bean10Img, bean11Img, bean12Img];
+
 
 /* ─── DESIGN TOKENS ─── */
 const COLORS = {
@@ -422,20 +437,20 @@ function HeroSection() {
       }}
     >
 
-      {/* --- FLOATING COFFEE BEANS --- */}
+      {/* --- FLOATING COFFEE BEANS (Real Images) --- */}
       {[
-        { top: "5%", left: "3%", size: 38, rotate: 25, dur: 6, delay: 0 },
-        { top: "8%", left: "18%", size: 28, rotate: -40, dur: 7, delay: 0.5 },
-        { top: "12%", right: "8%", size: 44, rotate: 60, dur: 5.5, delay: 1 },
-        { top: "35%", left: "2%", size: 32, rotate: -15, dur: 8, delay: 0.3 },
-        { top: "55%", left: "8%", size: 22, rotate: 80, dur: 6.5, delay: 1.2 },
-        { top: "72%", left: "5%", size: 36, rotate: -55, dur: 7.5, delay: 0.8 },
-        { top: "20%", right: "3%", size: 30, rotate: 35, dur: 6, delay: 0.6 },
-        { top: "50%", right: "5%", size: 40, rotate: -70, dur: 7, delay: 1.5 },
-        { top: "75%", right: "10%", size: 26, rotate: 20, dur: 5, delay: 0.2 },
-        { top: "85%", right: "28%", size: 20, rotate: -30, dur: 8, delay: 1.8 },
-        { top: "88%", left: "22%", size: 24, rotate: 45, dur: 6.8, delay: 0.4 },
-        { top: "60%", right: "22%", size: 18, rotate: -85, dur: 7.2, delay: 2.0 },
+        { top: "5%", left: "3%", size: 80, rotate: 25, dur: 6, delay: 0, img: 0 },
+        { top: "8%", left: "18%", size: 55, rotate: -40, dur: 7, delay: 0.5, img: 6 },
+        { top: "12%", right: "8%", size: 100, rotate: 60, dur: 5.5, delay: 1, img: 1 },
+        { top: "35%", left: "2%", size: 70, rotate: -15, dur: 8, delay: 0.3, img: 2 },
+        { top: "55%", left: "8%", size: 45, rotate: 80, dur: 6.5, delay: 1.2, img: 8 },
+        { top: "72%", left: "5%", size: 85, rotate: -55, dur: 7.5, delay: 0.8, img: 4 },
+        { top: "20%", right: "3%", size: 60, rotate: 35, dur: 6, delay: 0.6, img: 5 },
+        { top: "50%", right: "5%", size: 90, rotate: -70, dur: 7, delay: 1.5, img: 3 },
+        { top: "75%", right: "10%", size: 50, rotate: 20, dur: 5, delay: 0.2, img: 9 },
+        { top: "85%", right: "28%", size: 40, rotate: -30, dur: 8, delay: 1.8, img: 10 },
+        { top: "88%", left: "22%", size: 55, rotate: 45, dur: 6.8, delay: 0.4, img: 11 },
+        { top: "60%", right: "22%", size: 35, rotate: -85, dur: 7.2, delay: 2.0, img: 7 },
       ].map((bean, i) => (
         <motion.div
           key={`bean-${i}`}
@@ -452,14 +467,20 @@ function HeroSection() {
             bottom: bean.bottom,
             zIndex: i % 3 === 0 ? 15 : 1,
             pointerEvents: "none",
+            width: bean.size,
+            height: bean.size,
           }}
         >
-          <svg width={bean.size} height={bean.size} viewBox="0 0 64 64" fill="none">
-            <ellipse cx="32" cy="32" rx="28" ry="18" fill="#3E2A14" transform={`rotate(${bean.rotate} 32 32)`} />
-            <ellipse cx="32" cy="32" rx="26" ry="16" fill="#5C3D1E" transform={`rotate(${bean.rotate} 32 32)`} />
-            <path d={`M${32 - 12} 32 Q32 ${32 - 6} ${32 + 12} 32`} stroke="#2A1A08" strokeWidth="1.5" fill="none" transform={`rotate(${bean.rotate} 32 32)`} />
-            <ellipse cx="28" cy="28" rx="6" ry="3" fill="rgba(255,255,255,0.08)" transform={`rotate(${bean.rotate - 10} 32 32)`} />
-          </svg>
+          <img
+            src={BEAN_IMAGES[bean.img]}
+            alt=""
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.4))",
+            }}
+          />
         </motion.div>
       ))}
 
