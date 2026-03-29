@@ -434,84 +434,61 @@ function HeroSection() {
         }}
       />
 
-      {/* --- SELAH-INSPIRED AMBIENCE --- */}
-      
-      {/* 1. Cinematic Grain/Noise Overlay (Subtle Dark Mode Texture) */}
-      <div
-        style={{
-          position: "absolute",
-          inset: "-10%",
-          pointerEvents: "none",
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='700'%3E%3Cfilter id='hm'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='4' seed='15' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='1000' height='700' filter='url(%23hm)'/%3E%3C/svg%3E")`,
-          mixBlendMode: "overlay",
-          zIndex: 0,
-        }}
-      />
+      {/* --- LATTE LIQUID WAVES AMBIENCE --- */}
+      <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
+        
+        {/* Flowing Latte SVG Waves */}
+        <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" style={{ width: "100%", height: "150%", position: "absolute", top: "-10%", left: 0, opacity: 0.8 }}>
+          {/* Back Wave - Deep Caramel */}
+          <motion.path
+            fill="rgba(70,66,12,0.6)"
+            animate={{
+              d: [
+                "M0,0 L1440,0 L1440,150 Q1080,300 720,200 Q360,100 0,250 Z",
+                "M0,0 L1440,0 L1440,250 Q1080,100 720,200 Q360,300 0,150 Z",
+                "M0,0 L1440,0 L1440,150 Q1080,300 720,200 Q360,100 0,250 Z"
+              ]
+            }}
+            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          />
+          {/* Middle Wave - Golden Milk */}
+          <motion.path
+            fill="rgba(228,220,34,0.15)"
+            animate={{
+              d: [
+                "M0,0 L1440,0 L1440,300 Q1080,150 720,300 Q360,450 0,350 Z",
+                "M0,0 L1440,0 L1440,400 Q1080,500 720,350 Q360,200 0,450 Z",
+                "M0,0 L1440,0 L1440,300 Q1080,150 720,300 Q360,450 0,350 Z"
+              ]
+            }}
+            transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+          />
+          {/* Front Wave - Cream */}
+          <motion.path
+            fill="rgba(255,255,255,0.05)"
+            animate={{
+              d: [
+                "M0,0 L1440,0 L1440,500 Q1080,700 720,550 Q360,400 0,600 Z",
+                "M0,0 L1440,0 L1440,600 Q1080,450 720,600 Q360,750 0,500 Z",
+                "M0,0 L1440,0 L1440,500 Q1080,700 720,550 Q360,400 0,600 Z"
+              ]
+            }}
+            transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </svg>
 
-      {/* 2. Elegant Thin Spinning Ovals (Golden) */}
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
-        style={{
-          position: "absolute",
-          top: "10%",
-          left: isMobile ? "-20%" : "20%",
-          width: isMobile ? "120vw" : "60vw",
-          height: isMobile ? "80vw" : "40vw",
-          minWidth: "400px",
-          minHeight: "300px",
-          borderRadius: "50%",
-          border: `1px solid rgba(228,220,34,0.15)`,
-          opacity: 0.6,
-          pointerEvents: "none",
-        }}
-      />
-      <motion.div
-        animate={{ rotate: -360 }}
-        transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
-        style={{
-          position: "absolute",
-          top: "15%",
-          left: isMobile ? "-10%" : "25%",
-          width: isMobile ? "100vw" : "50vw",
-          height: isMobile ? "100vw" : "50vw",
-          minWidth: "350px",
-          minHeight: "350px",
-          borderRadius: "50%",
-          border: `1px solid rgba(228,220,34,0.1)`,
-          opacity: 0.8,
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* 3. Twinkling Golden Sparkles */}
-      {[
-        { top: "25%", left: "15%", delay: 0.2, size: 22 },
-        { top: "15%", right: "25%", delay: 0.9, size: 16 },
-        { bottom: "30%", left: "10%", delay: 1.5, size: 20 },
-        { bottom: "20%", right: "12%", delay: 0.4, size: 14 },
-        { top: "45%", right: "5%", delay: 1.2, size: 18 },
-        { top: "70%", left: "8%", delay: 2.1, size: 12 },
-      ].map((pos, i) => (
+        {/* Vertical dripping / flowing streaks to simulate pouring liquid */}
         <motion.div
-          key={`sparkle-${i}`}
-          animate={{ scale: [0.7, 1.2, 0.7], opacity: [0.2, 0.85, 0.2] }}
-          transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: pos.delay }}
-          style={{
-            position: "absolute",
-            top: pos.top,
-            left: pos.left,
-            right: pos.right,
-            bottom: pos.bottom,
-            pointerEvents: "none",
-            color: "rgba(228,220,34,0.8)",
-          }}
-        >
-          <svg width={pos.size} height={pos.size} viewBox="0 0 18 18" fill="currentColor">
-            <path d="M9 0L10.5 7.5L18 9L10.5 10.5L9 18L7.5 10.5L0 9L7.5 7.5Z"/>
-          </svg>
-        </motion.div>
-      ))}
+           animate={{ y: ["-50%", "150%"] }}
+           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+           style={{ position: "absolute", top: 0, left: "15%", width: "25%", height: "100%", background: "linear-gradient(180deg, transparent 0%, rgba(228,220,34,0.08) 50%, transparent 100%)", borderRadius: "50%", filter: "blur(60px)" }}
+        />
+        <motion.div
+           animate={{ y: ["-100%", "150%"] }}
+           transition={{ duration: 20, repeat: Infinity, ease: "linear", delay: 5 }}
+           style={{ position: "absolute", top: 0, right: "20%", width: "35%", height: "120%", background: "linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%)", borderRadius: "50%", filter: "blur(80px)" }}
+        />
+      </div>
 
       <div
         style={{
