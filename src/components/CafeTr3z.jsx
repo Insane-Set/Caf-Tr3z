@@ -668,7 +668,7 @@ function HeroSection() {
               width: "100%", 
               height: "100%", 
               objectFit: "contain", 
-              filter: "drop-shadow(0 30px 40px rgba(228,220,34,0.4)) drop-shadow(0 0 60px rgba(228,220,34,0.25))" 
+              filter: "drop-shadow(0 30px 40px rgba(0,0,0,0.7)) drop-shadow(0 0 60px rgba(0,0,0,0.5))" 
             }} 
           />
         </motion.div>
