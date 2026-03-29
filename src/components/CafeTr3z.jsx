@@ -417,263 +417,232 @@ function HeroSection() {
         overflow: "hidden",
         backgroundColor: COLORS.pitchBlack,
         display: "flex",
-        alignItems: isMobile ? "flex-start" : "center",
+        alignItems: "center",
         justifyContent: "center",
-        paddingTop: isMobile ? "12vh" : 0,
       }}
     >
-      <motion.div
-        style={{
-          position: "absolute",
-          inset: "-20%",
-          backgroundImage: `
-            radial-gradient(ellipse 60% 40% at 70% 50%, rgba(228,220,34,0.06) 0%, transparent 70%),
-            radial-gradient(ellipse 40% 60% at 20% 60%, rgba(90,55,10,0.4) 0%, transparent 70%)
-          `,
-          y: y1,
-        }}
-      />
 
-      {/* --- LATTE LIQUID WAVES AMBIENCE --- */}
-      <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
-        
-        {/* Flowing Latte SVG Waves */}
-        <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" style={{ width: "100%", height: "150%", position: "absolute", top: "-10%", left: 0, opacity: 0.9 }}>
-          {/* Back Wave - Deep Coffee Brown */}
-          <motion.path
-            fill="rgba(46,34,7,0.7)"
-            animate={{
-              d: [
-                "M0,0 L1440,0 L1440,150 Q1080,300 720,200 Q360,100 0,250 Z",
-                "M0,0 L1440,0 L1440,250 Q1080,100 720,200 Q360,300 0,150 Z",
-                "M0,0 L1440,0 L1440,150 Q1080,300 720,200 Q360,100 0,250 Z"
-              ]
-            }}
-            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          />
-          {/* Middle Wave - Golden Coffee Brown */}
-          <motion.path
-            fill="rgba(130,100,10,0.4)"
-            animate={{
-              d: [
-                "M0,0 L1440,0 L1440,300 Q1080,150 720,300 Q360,450 0,350 Z",
-                "M0,0 L1440,0 L1440,400 Q1080,500 720,350 Q360,200 0,450 Z",
-                "M0,0 L1440,0 L1440,300 Q1080,150 720,300 Q360,450 0,350 Z"
-              ]
-            }}
-            transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-          />
-          {/* Front Wave - Bright Yellow Highlight */}
-          <motion.path
-            fill="rgba(228,220,34,0.12)"
-            animate={{
-              d: [
-                "M0,0 L1440,0 L1440,500 Q1080,700 720,550 Q360,400 0,600 Z",
-                "M0,0 L1440,0 L1440,600 Q1080,450 720,600 Q360,750 0,500 Z",
-                "M0,0 L1440,0 L1440,500 Q1080,700 720,550 Q360,400 0,600 Z"
-              ]
-            }}
-            transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </svg>
-
-        {/* Vertical dripping / flowing streaks to simulate pouring liquid */}
+      {/* --- FLOATING COFFEE BEANS --- */}
+      {[
+        { top: "5%", left: "3%", size: 38, rotate: 25, dur: 6, delay: 0 },
+        { top: "8%", left: "18%", size: 28, rotate: -40, dur: 7, delay: 0.5 },
+        { top: "12%", right: "8%", size: 44, rotate: 60, dur: 5.5, delay: 1 },
+        { top: "35%", left: "2%", size: 32, rotate: -15, dur: 8, delay: 0.3 },
+        { top: "55%", left: "8%", size: 22, rotate: 80, dur: 6.5, delay: 1.2 },
+        { top: "72%", left: "5%", size: 36, rotate: -55, dur: 7.5, delay: 0.8 },
+        { top: "20%", right: "3%", size: 30, rotate: 35, dur: 6, delay: 0.6 },
+        { top: "50%", right: "5%", size: 40, rotate: -70, dur: 7, delay: 1.5 },
+        { top: "75%", right: "10%", size: 26, rotate: 20, dur: 5, delay: 0.2 },
+        { top: "85%", right: "28%", size: 20, rotate: -30, dur: 8, delay: 1.8 },
+        { top: "88%", left: "22%", size: 24, rotate: 45, dur: 6.8, delay: 0.4 },
+        { top: "60%", right: "22%", size: 18, rotate: -85, dur: 7.2, delay: 2.0 },
+      ].map((bean, i) => (
         <motion.div
-           animate={{ y: ["-50%", "150%"] }}
-           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-           style={{ position: "absolute", top: 0, left: "15%", width: "25%", height: "100%", background: "linear-gradient(180deg, transparent 0%, rgba(130,100,10,0.15) 50%, transparent 100%)", borderRadius: "50%", filter: "blur(60px)" }}
-        />
-        <motion.div
-           animate={{ y: ["-100%", "150%"] }}
-           transition={{ duration: 20, repeat: Infinity, ease: "linear", delay: 5 }}
-           style={{ position: "absolute", top: 0, right: "20%", width: "35%", height: "120%", background: "linear-gradient(180deg, transparent 0%, rgba(228,220,34,0.06) 50%, transparent 100%)", borderRadius: "50%", filter: "blur(80px)" }}
-        />
-      </div>
-
-      <div
-        style={{
-          position: "relative",
-          zIndex: 10,
-          display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100%",
-          maxWidth: "1200px",
-          gap: isMobile ? "0.5rem" : "6vw",
-          padding: "0 5%",
-          marginTop: isMobile ? "2vh" : 0,
-        }}
-      >
-        {/* Hero Text */}
-        <motion.div
+          key={`bean-${i}`}
+          animate={{
+            y: [0, -12, 0, 10, 0],
+            rotate: [bean.rotate, bean.rotate + 20, bean.rotate - 15, bean.rotate + 10, bean.rotate],
+          }}
+          transition={{ duration: bean.dur, repeat: Infinity, ease: "easeInOut", delay: bean.delay }}
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: isMobile ? "center" : "flex-start",
-            textAlign: isMobile ? "center" : "left",
-            y: isMobile ? 0 : y3,
-            opacity: isMobile ? 1 : smoothOpacity,
-            width: isMobile ? "100%" : "auto",
-            maxWidth: "550px",
+            position: "absolute",
+            top: bean.top,
+            left: bean.left,
+            right: bean.right,
+            bottom: bean.bottom,
+            zIndex: i % 3 === 0 ? 15 : 1,
+            pointerEvents: "none",
           }}
         >
-        <motion.p
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "0.7rem",
-            letterSpacing: "0.25em",
-            textTransform: "uppercase",
-            color: COLORS.goldenGlow,
-            marginBottom: "1.5rem",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: isMobile ? "center" : "flex-start",
-            gap: "0.75rem",
-          }}
-        >
-          <span style={{ display: isMobile ? "none" : "inline-block", width: "2rem", height: "1px", backgroundColor: COLORS.goldenGlow }} />
-          Mexicali, B.C. · Est. 2019
-        </motion.p>
+          <svg width={bean.size} height={bean.size} viewBox="0 0 64 64" fill="none">
+            <ellipse cx="32" cy="32" rx="28" ry="18" fill="#3E2A14" transform={`rotate(${bean.rotate} 32 32)`} />
+            <ellipse cx="32" cy="32" rx="26" ry="16" fill="#5C3D1E" transform={`rotate(${bean.rotate} 32 32)`} />
+            <path d={`M${32 - 12} 32 Q32 ${32 - 6} ${32 + 12} 32`} stroke="#2A1A08" strokeWidth="1.5" fill="none" transform={`rotate(${bean.rotate} 32 32)`} />
+            <ellipse cx="28" cy="28" rx="6" ry="3" fill="rgba(255,255,255,0.08)" transform={`rotate(${bean.rotate - 10} 32 32)`} />
+          </svg>
+        </motion.div>
+      ))}
 
-        <div style={{ overflow: "hidden", padding: "0.1em 0", width: "100%" }}>
+      {/* --- MAIN CONTENT LAYOUT --- */}
+      <div style={{ position: "relative", zIndex: 10, width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+
+        {/* "CAFÉ" — top-left area */}
+        <div style={{ overflow: "hidden", position: "absolute", top: isMobile ? "10%" : "12%", left: isMobile ? "6%" : "8%", zIndex: 12 }}>
           <motion.h1
-            initial={{ y: "100%" }}
+            initial={{ y: "110%" }}
             animate={{ y: 0 }}
             transition={{ duration: 0.9, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
             style={{
               fontFamily: "'Cormorant Garamond', serif",
-              fontSize: isMobile ? "clamp(4.5rem, 18vw, 6rem)" : "clamp(3.5rem, 8vw, 7rem)",
+              fontSize: isMobile ? "clamp(3.5rem, 16vw, 5rem)" : "clamp(5rem, 10vw, 10rem)",
               fontWeight: 700,
-              lineHeight: 1.05,
+              lineHeight: 1,
               color: COLORS.white,
               margin: 0,
+              textShadow: "0 4px 30px rgba(0,0,0,0.6)",
             }}
           >
-            Café
+            CAFÉ
           </motion.h1>
         </div>
-        <div style={{ overflow: "hidden", padding: "0.1em 0", width: "100%" }}>
+
+        {/* "TR3Z" — right of center */}
+        <div style={{ overflow: "hidden", position: "absolute", top: isMobile ? "auto" : "38%", bottom: isMobile ? "38%" : "auto", right: isMobile ? "6%" : "8%", zIndex: 12 }}>
           <motion.h1
-            initial={{ y: "100%" }}
+            initial={{ y: "110%" }}
             animate={{ y: 0 }}
-            transition={{ duration: 0.9, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.9, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
             style={{
               fontFamily: "'Cormorant Garamond', serif",
-              fontSize: isMobile ? "clamp(4.5rem, 18vw, 6rem)" : "clamp(3.5rem, 8vw, 7rem)",
+              fontSize: isMobile ? "clamp(3.5rem, 16vw, 5rem)" : "clamp(5rem, 10vw, 10rem)",
               fontWeight: 700,
-              lineHeight: 1.05,
+              lineHeight: 1,
               color: COLORS.white,
               margin: 0,
+              textShadow: "0 4px 30px rgba(0,0,0,0.6)",
             }}
           >
-            TR<span style={{ color: COLORS.goldenGlow, display: "inline-block", transform: "translateY(-0.24em)" }}>3</span>Z
+            TR<span style={{ color: COLORS.goldenGlow, display: "inline-block", transform: "translateY(-0.22em)" }}>3</span>Z
           </motion.h1>
         </div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.1 }}
+        {/* Signature Cup — centered */}
+        <motion.div
+          initial={{ opacity: 0, y: 50, scale: 0.85 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 1.2, delay: 1, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: isMobile ? "0.95rem" : "clamp(0.85rem, 1.5vw, 1.05rem)",
-            color: COLORS.ashGrey,
-            marginTop: "1.5rem",
-            maxWidth: "380px",
-            lineHeight: 1.65,
+            position: "relative",
+            zIndex: 11,
+            width: isMobile ? "min(60vw, 280px)" : "min(32vw, 420px)",
+            aspectRatio: "1",
+            y: smoothY2,
           }}
         >
-          Donde la precisión se encuentra con la calidez. Una experiencia de café boutique arraigada en el oficio, la cultura y la comunidad.
-        </motion.p>
+          <img
+            src={heroImg}
+            alt="Café Tr3z Signature Coffee"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              filter: "drop-shadow(0 30px 50px rgba(0,0,0,0.8)) drop-shadow(0 0 80px rgba(0,0,0,0.4))",
+            }}
+          />
+        </motion.div>
 
+        {/* --- DIAGONAL YELLOW BANNER WITH BUTTONS --- */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.3 }}
-          style={{ display: "flex", gap: "1rem", marginTop: "2.5rem", alignItems: "center", justifyContent: isMobile ? "center" : "flex-start", flexWrap: "wrap" }}
+          initial={{ x: "100%", opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            position: "absolute",
+            bottom: isMobile ? "12%" : "18%",
+            left: "-5%",
+            right: "-5%",
+            zIndex: 20,
+            backgroundColor: COLORS.goldenGlow,
+            transform: "rotate(-3deg)",
+            padding: isMobile ? "0.8rem 0" : "1rem 0",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: isMobile ? "1.5rem" : "4rem",
+            overflow: "hidden",
+          }}
         >
+          {/* Scrolling repeat decoration */}
           <a
             href="#menu"
             style={{
-              display: "inline-block",
-              padding: "0.9rem 2.2rem",
-              borderRadius: "9999px",
-              backgroundColor: "transparent",
-              border: `1.5px solid ${COLORS.goldenGlow}`,
-              color: COLORS.goldenGlow,
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: "0.75rem",
-              letterSpacing: "0.15em",
+              fontSize: isMobile ? "0.7rem" : "0.85rem",
+              fontWeight: 700,
+              letterSpacing: "0.2em",
               textTransform: "uppercase",
+              color: COLORS.pitchBlack,
               textDecoration: "none",
               cursor: "pointer",
-              transition: "background-color 0.3s, color 0.3s",
+              padding: "0.5rem 1.5rem",
+              borderRadius: "2px",
+              transition: "opacity 0.2s",
+              whiteSpace: "nowrap",
             }}
-            onMouseEnter={(e) => { e.target.style.backgroundColor = COLORS.goldenGlow; e.target.style.color = COLORS.pitchBlack; }}
-            onMouseLeave={(e) => { e.target.style.backgroundColor = "transparent"; e.target.style.color = COLORS.goldenGlow; }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.6")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           >
-            Ver Menú
+            ☕ Ver Menú
           </a>
+          <span style={{ width: "4px", height: "4px", borderRadius: "50%", backgroundColor: COLORS.pitchBlack, opacity: 0.4 }} />
           <a
             href="#story"
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              color: COLORS.ashGrey,
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: "0.75rem",
-              letterSpacing: "0.12em",
+              fontSize: isMobile ? "0.7rem" : "0.85rem",
+              fontWeight: 700,
+              letterSpacing: "0.2em",
               textTransform: "uppercase",
+              color: COLORS.pitchBlack,
               textDecoration: "none",
               cursor: "pointer",
-              transition: "color 0.2s",
+              padding: "0.5rem 1.5rem",
+              borderRadius: "2px",
+              transition: "opacity 0.2s",
+              whiteSpace: "nowrap",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = COLORS.goldenGlow)}
-            onMouseLeave={(e) => (e.currentTarget.style.color = COLORS.ashGrey)}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.6")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           >
-            Nuestra Historia
-            <span style={{ fontSize: "1rem" }}>→</span>
+            Nuestra Historia →
+          </a>
+          <span style={{ width: "4px", height: "4px", borderRadius: "50%", backgroundColor: COLORS.pitchBlack, opacity: 0.4 }} />
+          <a
+            href="#menu"
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: isMobile ? "0.7rem" : "0.85rem",
+              fontWeight: 700,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: COLORS.pitchBlack,
+              textDecoration: "none",
+              cursor: "pointer",
+              padding: "0.5rem 1.5rem",
+              borderRadius: "2px",
+              transition: "opacity 0.2s",
+              whiteSpace: "nowrap",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.6")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+          >
+            ☕ Ver Menú
           </a>
         </motion.div>
-      </motion.div>
 
-      {/* Signature Cup Image */}
-      <motion.div
-        style={{
-          display: "flex",
-          justifyContent: isMobile ? "center" : "flex-start",
-          y: smoothY2,
-          pointerEvents: "none",
-        }}
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.9 }}
-          animate={{ opacity: isMobile ? 0.55 : 1, y: 0, scale: 1 }}
-          transition={{ duration: 1.2, delay: 1.6, ease: [0.16, 1, 0.3, 1] }}
-          style={{ 
-            width: isMobile ? "min(68vw, 320px)" : "min(40vw, 550px)", 
-            aspectRatio: "1",
-            rotate: isMobile ? -2 : 0,
+        {/* Small tagline */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.8 }}
+          style={{
+            position: "absolute",
+            bottom: isMobile ? "5%" : "8%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "0.65rem",
+            letterSpacing: "0.25em",
+            textTransform: "uppercase",
+            color: COLORS.ashGrey,
+            opacity: 0.6,
+            zIndex: 21,
+            whiteSpace: "nowrap",
           }}
         >
-          <img 
-            src={heroImg} 
-            alt="Café Tr3z Signature Coffee" 
-            style={{ 
-              width: "100%", 
-              height: "100%", 
-              objectFit: "contain", 
-              filter: "drop-shadow(0 30px 40px rgba(0,0,0,0.7)) drop-shadow(0 0 60px rgba(0,0,0,0.5))" 
-            }} 
-          />
-        </motion.div>
-      </motion.div>
-      
+          Mexicali, B.C. · Est. 2019
+        </motion.p>
+
       </div>
 
     </section>
