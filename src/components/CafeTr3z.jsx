@@ -688,18 +688,31 @@ function HeroSection() {
 function DeliverySection() {
   const isMobile = useIsMobile();
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-15%" });
+  const isInView = useInView(sectionRef, { once: true, margin: "-10%" });
+
+  const apps = [
+    {
+      appName: "Rappi",
+      url: "https://www.rappi.com.mx/restaurantes/1923801310-cafe-tr3z",
+      tagline: "Llega directo a tu puerta",
+      slideFrom: "left",
+    },
+    {
+      appName: "DiDi Food",
+      url: "https://web.didiglobal.com/mx/food/mexicali-bcn/cafe-tr3z/5764607643247968488/",
+      tagline: "Ordena fácil y rápido",
+      slideFrom: "right",
+    },
+  ];
 
   return (
-    <section id="delivery" ref={sectionRef} style={{ backgroundColor: COLORS.pitchBlack, padding: isMobile ? "5rem 6%" : "8rem 10%", position: "relative" }}>
-      {/* Ambient Glow */}
-      <div aria-hidden="true" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "50%", height: "50%", borderRadius: "50%", background: "radial-gradient(circle, rgba(228,220,34,0.05) 0%, transparent 60%)", pointerEvents: "none" }} />
-      
-      <motion.div 
-        initial={{ opacity: 0, y: 30 }} 
+    <section id="delivery" ref={sectionRef} style={{ backgroundColor: COLORS.pitchBlack, position: "relative", overflow: "hidden" }}>
+      {/* Section Header */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8 }} 
-        style={{ textAlign: "center", marginBottom: isMobile ? "3rem" : "5rem" }}
+        transition={{ duration: 0.8 }}
+        style={{ textAlign: "center", padding: isMobile ? "5rem 6% 2.5rem" : "8rem 10% 4rem" }}
       >
         <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", letterSpacing: "0.3em", color: COLORS.goldenGlow, textTransform: "uppercase", marginBottom: "1rem" }}>
           — Lleva Café Tr3z Contigo —
@@ -709,233 +722,215 @@ function DeliverySection() {
         </h2>
       </motion.div>
 
-      <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: "2rem", justifyContent: "center", maxWidth: "900px", margin: "0 auto", position: "relative", zIndex: 1 }}>
-        {[
-          {
-            appName: "Rappi",
-            url: "https://www.rappi.com.mx/restaurantes/1923801310-cafe-tr3z",
-            tagline: "Llega directo a tu puerta",
-            delay: 0,
-            routePath: "M 30,160 C 50,150 60,100 90,90 C 120,80 110,50 140,55 C 170,60 160,30 200,25 C 240,20 230,60 260,55 C 290,50 280,25 310,30",
-            dotStart: "0%",
-          },
-          {
-            appName: "DiDi Food",
-            url: "https://web.didiglobal.com/mx/food/mexicali-bcn/cafe-tr3z/5764607643247968488/",
-            tagline: "Ordena fácil y rápido",
-            delay: 0.3,
-            routePath: "M 30,30 C 60,35 50,80 80,90 C 110,100 130,60 160,55 C 190,50 180,110 210,120 C 240,130 260,80 290,70 C 310,65 310,100 310,115",
-            dotStart: "0%",
-          }
-        ].map((app) => (
-          <motion.a 
+      {/* Split Screen Container */}
+      <div style={{
+        display: "flex",
+        flexDirection: isMobile ? "column" : "row",
+        width: "100%",
+        position: "relative",
+      }}>
+        {/* Center Divider (desktop only) */}
+        {!isMobile && (
+          <motion.div
+            initial={{ scaleY: 0 }}
+            animate={isInView ? { scaleY: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+            style={{
+              position: "absolute",
+              top: 0,
+              bottom: 0,
+              left: "50%",
+              width: "2px",
+              background: `linear-gradient(to bottom, transparent, ${COLORS.goldenGlow}, transparent)`,
+              zIndex: 10,
+              transformOrigin: "top",
+              boxShadow: `0 0 15px rgba(228,220,34,0.4)`,
+            }}
+          />
+        )}
+
+        {apps.map((app, i) => (
+          <motion.a
             key={app.appName}
             href={app.url}
             target="_blank"
             rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 40 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7, delay: app.delay }}
-            whileHover={{ scale: 1.02, borderColor: COLORS.goldenGlow }}
-            whileTap={{ scale: 0.98 }}
+            initial={{
+              opacity: 0,
+              x: isMobile
+                ? (app.slideFrom === "left" ? -60 : 60)
+                : (app.slideFrom === "left" ? -120 : 120),
+            }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.9, delay: i * 0.2, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ backgroundColor: "rgba(228,220,34,0.03)" }}
+            whileTap={{ scale: 0.99 }}
             style={{
               flex: 1,
               position: "relative",
-              borderRadius: "20px",
-              border: "1px solid rgba(228,220,34,0.12)",
-              backgroundColor: "#0e0e0b",
               textDecoration: "none",
+              cursor: "pointer",
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
-              cursor: "pointer",
-              minHeight: isMobile ? "280px" : "320px",
-              transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+              justifyContent: "flex-end",
+              minHeight: isMobile ? "280px" : "420px",
+              padding: isMobile ? "2.5rem 8%" : "3.5rem 5%",
+              backgroundColor: i === 0 ? "#0c0c09" : "#0e0e0a",
+              borderTop: isMobile && i === 1 ? `1px solid rgba(228,220,34,0.15)` : "none",
+              transition: "background-color 0.4s ease",
             }}
           >
-            {/* City Grid Background */}
-            <div style={{ position: "absolute", inset: 0, zIndex: 0, opacity: 0.4 }}>
-              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <pattern id={`grid-${app.appName}`} width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 L 0 40" fill="none" stroke="rgba(228,220,34,0.08)" strokeWidth="0.5" />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill={`url(#grid-${app.appName})`} />
-                {/* Irregular "street" blocks */}
-                <rect x="15%" y="20%" width="18%" height="25%" rx="2" fill="none" stroke="rgba(228,220,34,0.06)" strokeWidth="0.5" />
-                <rect x="45%" y="10%" width="22%" height="30%" rx="2" fill="none" stroke="rgba(228,220,34,0.06)" strokeWidth="0.5" />
-                <rect x="60%" y="55%" width="15%" height="20%" rx="2" fill="none" stroke="rgba(228,220,34,0.06)" strokeWidth="0.5" />
-                <rect x="10%" y="60%" width="20%" height="18%" rx="2" fill="none" stroke="rgba(228,220,34,0.06)" strokeWidth="0.5" />
-                <rect x="75%" y="30%" width="12%" height="25%" rx="2" fill="none" stroke="rgba(228,220,34,0.05)" strokeWidth="0.5" />
-              </svg>
-            </div>
+            {/* Diagonal stripe pattern background */}
+            <div aria-hidden="true" style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage: i === 0
+                ? `repeating-linear-gradient(135deg, transparent, transparent 20px, rgba(228,220,34,0.02) 20px, rgba(228,220,34,0.02) 21px)`
+                : `repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(228,220,34,0.02) 20px, rgba(228,220,34,0.02) 21px)`,
+              zIndex: 0,
+            }} />
 
-            {/* Dark overlay gradient — fades grid at edges */}
-            <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "radial-gradient(ellipse at 50% 60%, transparent 20%, #0e0e0b 85%)", pointerEvents: "none" }} />
+            {/* Giant Watermark Typography */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ duration: 1.2, delay: 0.4 + i * 0.2 }}
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: i === 0 ? "50%" : "50%",
+                transform: "translate(-50%, -50%)",
+                fontFamily: "system-ui, -apple-system, sans-serif",
+                fontSize: isMobile ? "6rem" : "10rem",
+                fontWeight: 900,
+                fontStyle: app.appName === "Rappi" ? "italic" : "normal",
+                letterSpacing: app.appName === "DiDi Food" ? "-4px" : "normal",
+                color: "transparent",
+                WebkitTextStroke: `1.5px rgba(228,220,34,0.06)`,
+                whiteSpace: "nowrap",
+                pointerEvents: "none",
+                zIndex: 1,
+                userSelect: "none",
+                lineHeight: 1,
+              }}
+            >
+              {app.appName}
+            </motion.div>
 
-            {/* Animated Route SVG */}
-            <div style={{ position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none" }}>
-              <svg width="100%" height="100%" viewBox="0 0 340 180" preserveAspectRatio="xMidYMid meet" style={{ position: "absolute", inset: 0 }}>
-                {/* The dotted route (static) */}
-                <path 
-                  d={app.routePath}
-                  fill="none" 
-                  stroke="rgba(228,220,34,0.15)" 
-                  strokeWidth="2" 
-                  strokeDasharray="6 4" 
-                />
+            {/* Content */}
+            <div style={{ position: "relative", zIndex: 2 }}>
+              {/* Eyebrow */}
+              <motion.p
+                initial={{ opacity: 0, y: 15 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.5 + i * 0.2, duration: 0.6 }}
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "0.65rem",
+                  letterSpacing: "0.25em",
+                  textTransform: "uppercase",
+                  color: COLORS.goldenGlow,
+                  marginBottom: "1rem",
+                }}
+              >
+                {i === 0 ? "— Entrega Rápida —" : "— Pide Fácil —"}
+              </motion.p>
 
-                {/* The golden glowing route (animated draw) */}
-                <motion.path 
-                  d={app.routePath}
-                  fill="none" 
-                  stroke={COLORS.goldenGlow} 
-                  strokeWidth="2.5" 
-                  strokeLinecap="round"
-                  initial={{ pathLength: 0, opacity: 0 }}
-                  animate={isInView ? { pathLength: 1, opacity: 1 } : {}}
-                  transition={{ duration: 2.5, delay: app.delay + 0.5, ease: "easeInOut" }}
-                  style={{ filter: "drop-shadow(0 0 6px rgba(228,220,34,0.5))" }}
-                />
+              {/* App Name */}
+              <motion.h3
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.6 + i * 0.2, duration: 0.6 }}
+                style={{
+                  fontFamily: "system-ui, -apple-system, sans-serif",
+                  fontSize: isMobile ? "3rem" : "3.8rem",
+                  color: COLORS.white,
+                  margin: 0,
+                  fontWeight: 900,
+                  fontStyle: app.appName === "Rappi" ? "italic" : "normal",
+                  letterSpacing: app.appName === "DiDi Food" ? "-2px" : "normal",
+                  lineHeight: 1,
+                  textShadow: "0 2px 20px rgba(0,0,0,0.6)",
+                }}
+              >
+                {app.appName}
+              </motion.h3>
 
-                {/* Start Pin — Café Tr3z */}
-                <motion.g
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={isInView ? { scale: 1, opacity: 1 } : {}}
-                  transition={{ delay: app.delay + 0.3, duration: 0.4, type: "spring" }}
-                >
-                  {app.appName === "Rappi" ? (
-                    <>
-                      <circle cx="30" cy="160" r="6" fill={COLORS.goldenGlow} opacity="0.25" />
-                      <circle cx="30" cy="160" r="3.5" fill={COLORS.goldenGlow} />
-                    </>
-                  ) : (
-                    <>
-                      <circle cx="30" cy="30" r="6" fill={COLORS.goldenGlow} opacity="0.25" />
-                      <circle cx="30" cy="30" r="3.5" fill={COLORS.goldenGlow} />
-                    </>
-                  )}
-                </motion.g>
+              {/* Tagline */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ delay: 0.8 + i * 0.2, duration: 0.6 }}
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "0.9rem",
+                  color: COLORS.ashGrey,
+                  margin: "0.8rem 0 0",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                {app.tagline}
+              </motion.p>
 
-                {/* End Pin — Destination */}
-                <motion.g
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={isInView ? { scale: 1, opacity: 1 } : {}}
-                  transition={{ delay: app.delay + 2.8, duration: 0.5, type: "spring", stiffness: 200 }}
-                >
-                  {app.appName === "Rappi" ? (
-                    <>
-                      <circle cx="310" cy="30" r="8" fill="none" stroke={COLORS.goldenGlow} strokeWidth="1.5" opacity="0.4" />
-                      <circle cx="310" cy="30" r="4" fill={COLORS.white} />
-                    </>
-                  ) : (
-                    <>
-                      <circle cx="310" cy="115" r="8" fill="none" stroke={COLORS.goldenGlow} strokeWidth="1.5" opacity="0.4" />
-                      <circle cx="310" cy="115" r="4" fill={COLORS.white} />
-                    </>
-                  )}
-                </motion.g>
-
-                {/* ☕ Café icon at start */}
-                {app.appName === "Rappi" ? (
-                  <motion.text x="18" y="148" fontSize="10" initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: app.delay + 0.5 }}>☕</motion.text>
-                ) : (
-                  <motion.text x="18" y="18" fontSize="10" initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: app.delay + 0.5 }}>☕</motion.text>
-                )}
-
-                {/* 📍 Home icon at end */}
-                {app.appName === "Rappi" ? (
-                  <motion.text x="300" y="18" fontSize="10" initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: app.delay + 3 }}>📍</motion.text>
-                ) : (
-                  <motion.text x="300" y="103" fontSize="10" initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}} transition={{ delay: app.delay + 3 }}>📍</motion.text>
-                )}
-
-                {/* Animated glowing dot travelling the path */}
-                <motion.circle
-                  r="4"
-                  fill={COLORS.goldenGlow}
-                  style={{ filter: "drop-shadow(0 0 8px rgba(228,220,34,0.9))" }}
-                  initial={{ offsetDistance: "0%" }}
-                  animate={isInView ? { offsetDistance: "100%" } : {}}
-                  transition={{
-                    duration: 3,
-                    delay: app.delay + 0.5,
-                    ease: "easeInOut",
-                    repeat: Infinity,
-                    repeatDelay: 2,
+              {/* CTA Button */}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 1 + i * 0.2, duration: 0.5 }}
+                style={{ marginTop: "2rem" }}
+              >
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.6rem",
+                    backgroundColor: COLORS.goldenGlow,
+                    color: COLORS.pitchBlack,
+                    padding: "0.85rem 2rem",
+                    borderRadius: "99px",
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "0.75rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    boxShadow: "0 4px 25px rgba(228,220,34,0.3)",
+                    transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "scale(1.05)";
+                    e.currentTarget.style.boxShadow = "0 6px 30px rgba(228,220,34,0.45)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "scale(1)";
+                    e.currentTarget.style.boxShadow = "0 4px 25px rgba(228,220,34,0.3)";
                   }}
                 >
-                  <animateMotion
-                    dur="3s"
-                    begin={`${app.delay + 0.5}s`}
-                    repeatCount="indefinite"
-                    path={app.routePath}
-                  />
-                </motion.circle>
-
-                {/* Pulse ring radiating from the glowing dot */}
-                <motion.circle
-                  r="4"
-                  fill="none"
-                  stroke={COLORS.goldenGlow}
-                  strokeWidth="1"
-                  opacity="0.4"
-                >
-                  <animateMotion
-                    dur="3s"
-                    begin={`${app.delay + 0.5}s`}
-                    repeatCount="indefinite"
-                    path={app.routePath}
-                  />
-                  <animate attributeName="r" values="4;12;4" dur="1.5s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.4;0;0.4" dur="1.5s" repeatCount="indefinite" />
-                </motion.circle>
-              </svg>
-            </div>
-
-            {/* Content Overlay */}
-            <div style={{ position: "relative", zIndex: 3, padding: isMobile ? "1.8rem" : "2.2rem", display: "flex", flexDirection: "column", justifyContent: "space-between", flex: 1 }}>
-              {/* Top: App Name */}
-              <div>
-                <div style={{ color: COLORS.goldenGlow, fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif", marginBottom: "0.5rem" }}>
-                  — Tu café en camino —
-                </div>
-                <h3 style={{ fontFamily: "system-ui, -apple-system, sans-serif", fontSize: isMobile ? "2.2rem" : "2.6rem", color: COLORS.white, margin: 0, fontWeight: 900, fontStyle: app.appName === "Rappi" ? "italic" : "normal", letterSpacing: app.appName === "DiDi Food" ? "-1.5px" : "normal", textShadow: "0 2px 10px rgba(0,0,0,0.8)" }}>
-                  {app.appName}
-                </h3>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem", color: COLORS.ashGrey, letterSpacing: "0.03em", marginTop: "0.4rem" }}>
-                  {app.tagline}
-                </p>
-              </div>
-
-              {/* Bottom: CTA */}
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: app.delay + 2.5, duration: 0.5 }}
-                style={{ marginTop: "auto", paddingTop: "1.5rem" }}
-              >
-                <div style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  backgroundColor: COLORS.goldenGlow,
-                  color: COLORS.pitchBlack,
-                  padding: "0.7rem 1.6rem",
-                  borderRadius: "99px",
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: "0.75rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  boxShadow: "0 4px 20px rgba(228,220,34,0.25)",
-                }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                   Pedir en {app.appName}
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                  </svg>
                 </div>
               </motion.div>
             </div>
+
+            {/* Bottom accent line */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={isInView ? { scaleX: 1 } : {}}
+              transition={{ delay: 1.2 + i * 0.2, duration: 0.8, ease: "easeOut" }}
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: i === 0 ? 0 : "auto",
+                right: i === 1 ? 0 : "auto",
+                width: "40%",
+                height: "2px",
+                background: `linear-gradient(${i === 0 ? "to right" : "to left"}, ${COLORS.goldenGlow}, transparent)`,
+                transformOrigin: i === 0 ? "left" : "right",
+              }}
+            />
           </motion.a>
         ))}
       </div>
