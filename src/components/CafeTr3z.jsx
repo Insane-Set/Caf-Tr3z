@@ -434,84 +434,84 @@ function HeroSection() {
         }}
       />
 
-      {/* Animated Background Shapes */}
-      {/* 1. Organic rotating blob line */}
+      {/* --- SELAH-INSPIRED AMBIENCE --- */}
+      
+      {/* 1. Cinematic Grain/Noise Overlay (Subtle Dark Mode Texture) */}
+      <div
+        style={{
+          position: "absolute",
+          inset: "-10%",
+          pointerEvents: "none",
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1000' height='700'%3E%3Cfilter id='hm'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='4' seed='15' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='1000' height='700' filter='url(%23hm)'/%3E%3C/svg%3E")`,
+          mixBlendMode: "overlay",
+          zIndex: 0,
+        }}
+      />
+
+      {/* 2. Elegant Thin Spinning Ovals (Golden) */}
       <motion.div
-        animate={{
-          rotate: [0, 360],
-          borderRadius: [
-            "60% 40% 30% 70% / 60% 30% 70% 40%",
-            "30% 60% 70% 40% / 50% 60% 30% 60%",
-            "60% 40% 30% 70% / 60% 30% 70% 40%",
-          ],
-        }}
-        transition={{
-          duration: 25,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
         style={{
           position: "absolute",
           top: "10%",
-          left: isMobile ? "-20%" : "15%",
-          width: isMobile ? "80vw" : "35vw",
-          height: isMobile ? "80vw" : "35vw",
+          left: isMobile ? "-20%" : "20%",
+          width: isMobile ? "120vw" : "60vw",
+          height: isMobile ? "80vw" : "40vw",
+          minWidth: "400px",
+          minHeight: "300px",
+          borderRadius: "50%",
+          border: `1px solid rgba(228,220,34,0.15)`,
+          opacity: 0.6,
+          pointerEvents: "none",
+        }}
+      />
+      <motion.div
+        animate={{ rotate: -360 }}
+        transition={{ duration: 55, repeat: Infinity, ease: "linear" }}
+        style={{
+          position: "absolute",
+          top: "15%",
+          left: isMobile ? "-10%" : "25%",
+          width: isMobile ? "100vw" : "50vw",
+          height: isMobile ? "100vw" : "50vw",
           minWidth: "350px",
           minHeight: "350px",
-          border: `1.5px solid rgba(228,220,34,0.12)`,
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* 2. Abstract dashed halo behind cup */}
-      <motion.div
-        animate={{
-          scale: [0.95, 1.05, 0.95],
-          rotate: [0, 180, 360],
-        }}
-        transition={{
-          scale: { duration: 12, repeat: Infinity, ease: "easeInOut" },
-          rotate: { duration: 40, repeat: Infinity, ease: "linear" },
-        }}
-        style={{
-          position: "absolute",
-          bottom: "-5%",
-          right: isMobile ? "-10%" : "5%",
-          width: isMobile ? "120vw" : "55vw",
-          height: isMobile ? "120vw" : "55vw",
-          minWidth: "400px",
-          minHeight: "400px",
-          border: `1px dashed rgba(255,255,255,0.08)`,
           borderRadius: "50%",
+          border: `1px solid rgba(228,220,34,0.1)`,
+          opacity: 0.8,
           pointerEvents: "none",
         }}
       />
 
-      {/* 3. Floating glowing orb */}
-      <motion.div
-        animate={{
-          x: ["0vw", "8vw", "0vw"],
-          y: ["0vh", "-8vh", "0vh"],
-          opacity: [0.1, 0.3, 0.1],
-        }}
-        transition={{
-          duration: 18,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        style={{
-          position: "absolute",
-          top: "25%",
-          right: "25%",
-          width: "400px",
-          height: "400px",
-          background: "radial-gradient(circle, rgba(228,220,34,0.12) 0%, transparent 70%)",
-          borderRadius: "50%",
-          filter: "blur(40px)",
-          pointerEvents: "none",
-        }}
-      />
-
+      {/* 3. Twinkling Golden Sparkles */}
+      {[
+        { top: "25%", left: "15%", delay: 0.2, size: 22 },
+        { top: "15%", right: "25%", delay: 0.9, size: 16 },
+        { bottom: "30%", left: "10%", delay: 1.5, size: 20 },
+        { bottom: "20%", right: "12%", delay: 0.4, size: 14 },
+        { top: "45%", right: "5%", delay: 1.2, size: 18 },
+        { top: "70%", left: "8%", delay: 2.1, size: 12 },
+      ].map((pos, i) => (
+        <motion.div
+          key={`sparkle-${i}`}
+          animate={{ scale: [0.7, 1.2, 0.7], opacity: [0.2, 0.85, 0.2] }}
+          transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: pos.delay }}
+          style={{
+            position: "absolute",
+            top: pos.top,
+            left: pos.left,
+            right: pos.right,
+            bottom: pos.bottom,
+            pointerEvents: "none",
+            color: "rgba(228,220,34,0.8)",
+          }}
+        >
+          <svg width={pos.size} height={pos.size} viewBox="0 0 18 18" fill="currentColor">
+            <path d="M9 0L10.5 7.5L18 9L10.5 10.5L9 18L7.5 10.5L0 9L7.5 7.5Z"/>
+          </svg>
+        </motion.div>
+      ))}
 
       <div
         style={{
