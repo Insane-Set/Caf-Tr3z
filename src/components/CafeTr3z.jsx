@@ -709,59 +709,119 @@ function DeliverySection() {
       </motion.div>
 
       <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: "2rem", justifyContent: "center", maxWidth: "800px", margin: "0 auto", position: "relative", zIndex: 1 }}>
-        {/* Rappi */}
-        <motion.a 
-          href="https://www.rappi.com.mx/restaurantes/1923801310-cafe-tr3z"
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.02, backgroundColor: "rgba(228,220,34,0.05)", borderColor: "rgba(228,220,34,0.3)" }}
-          whileTap={{ scale: 0.98 }}
-          style={{
-            flex: 1,
-            padding: "3rem 2rem",
-            borderRadius: "16px",
-            border: "1px solid rgba(181,180,162,0.15)",
-            backgroundColor: "#12120e",
-            textDecoration: "none",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            transition: "all 0.3s",
-            cursor: "pointer",
-          }}
-        >
-          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "2rem", color: COLORS.white, margin: "0 0 0.5rem 0", fontWeight: 600 }}>Rappi</h3>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem", color: COLORS.ashGrey, letterSpacing: "0.05em", textAlign: "center", margin: 0 }}>Llega directo a tu puerta</p>
-          <div style={{ marginTop: "2rem", padding: "0.5rem 1.5rem", borderRadius: "99px", border: `1px solid ${COLORS.goldenGlow}`, color: COLORS.goldenGlow, fontFamily: "'DM Sans', sans-serif", fontSize: "0.7rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>Pedir Ahora</div>
-        </motion.a>
+        {[
+          {
+            appName: "Rappi",
+            url: "https://www.rappi.com.mx/restaurantes/1923801310-cafe-tr3z",
+            rating: "4.9 (200+)",
+            time: "15 — 25 min",
+            fee: "Calculado al pedir",
+            delay: 0,
+            deliveryIcon: (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11h12z"></path><path d="M14 8h5l3 5v5h-8"></path><circle cx="6.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+            )
+          },
+          {
+            appName: "DiDi Food",
+            url: "https://web.didiglobal.com/mx/food/mexicali-bcn/cafe-tr3z/5764607643247968488/",
+            rating: "4.8 (150+)",
+            time: "20 — 30 min",
+            fee: "$0",
+            delay: 0.2,
+            deliveryIcon: (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11h12z"></path><path d="M14 8h5l3 5v5h-8"></path><circle cx="6.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+            )
+          }
+        ].map((app, i) => (
+          <motion.a 
+            key={app.appName}
+            href={app.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial="rest"
+            whileInView="show"
+            whileHover="hover"
+            whileTap={{ scale: 0.98 }}
+            viewport={{ once: true, margin: "-10%" }}
+            variants={{
+              rest: { opacity: 0, y: 30, scale: 1, borderColor: "rgba(181,180,162,0.15)", boxShadow: "0 0px 0px rgba(0,0,0,0)" },
+              show: { opacity: 1, y: 0, scale: 1, borderColor: "rgba(181,180,162,0.15)", boxShadow: "0 0px 0px rgba(0,0,0,0)", transition: { duration: 0.6, delay: app.delay } },
+              hover: { opacity: 1, y: 0, scale: 1.02, borderColor: COLORS.goldenGlow, boxShadow: `0 10px 40px rgba(228,220,34,0.15)`, transition: { duration: 0.3 } }
+            }}
+            style={{
+              flex: 1,
+              position: "relative",
+              borderRadius: "20px",
+              border: "1px solid rgba(181,180,162,0.15)",
+              backgroundColor: "#12120e",
+              textDecoration: "none",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+              cursor: "pointer",
+              minHeight: "340px",
+            }}
+          >
+            {/* App brand header */}
+            <div style={{ padding: "1.2rem 1.5rem", borderBottom: "1px solid rgba(255,255,255,0.05)", display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: "rgba(255,255,255,0.02)", zIndex: 2 }}>
+              <span style={{ fontFamily: "system-ui, -apple-system, sans-serif", fontSize: "1.5rem", fontWeight: 900, fontStyle: app.appName === "Rappi" ? "italic" : "normal", color: "#ececec", letterSpacing: app.appName === "DiDi Food" ? "-1px" : "normal" }}>
+                {app.appName}
+              </span>
+              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", color: COLORS.ashGrey, letterSpacing: "0.1em", textTransform: "uppercase" }}>Entrega</span>
+            </div>
 
-        {/* DiDi Food */}
-        <motion.a 
-          href="https://web.didiglobal.com/mx/food/mexicali-bcn/cafe-tr3z/5764607643247968488/"
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.02, backgroundColor: "rgba(228,220,34,0.05)", borderColor: "rgba(228,220,34,0.3)" }}
-          whileTap={{ scale: 0.98 }}
-          style={{
-            flex: 1,
-            padding: "3rem 2rem",
-            borderRadius: "16px",
-            border: "1px solid rgba(181,180,162,0.15)",
-            backgroundColor: "#12120e",
-            textDecoration: "none",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            transition: "all 0.3s",
-            cursor: "pointer",
-          }}
-        >
-          <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "2rem", color: COLORS.white, margin: "0 0 0.5rem 0", fontWeight: 600 }}>DiDi Food</h3>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem", color: COLORS.ashGrey, letterSpacing: "0.05em", textAlign: "center", margin: 0 }}>Ordena fácil y rápido</p>
-          <div style={{ marginTop: "2rem", padding: "0.5rem 1.5rem", borderRadius: "99px", border: `1px solid ${COLORS.goldenGlow}`, color: COLORS.goldenGlow, fontFamily: "'DM Sans', sans-serif", fontSize: "0.7rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>Pedir Ahora</div>
-        </motion.a>
+            {/* Hero Image Mockup Area */}
+            <div style={{ position: "relative", height: "135px", backgroundColor: "#080807", backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(228,220,34,0.02) 10px, rgba(228,220,34,0.02) 20px)`, zIndex: 1 }}>
+              <div style={{ position: "absolute", bottom: "1rem", left: "1.5rem" }}>
+                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "2.2rem", color: COLORS.white, margin: 0, fontWeight: 700, textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>Café Tr3z</h3>
+              </div>
+            </div>
+
+            {/* Details Area */}
+            <div style={{ padding: "1.5rem", flex: 1, display: "flex", flexDirection: "column", gap: "1rem", zIndex: 2 }}>
+              {/* Rating and Time line */}
+              <div style={{ display: "flex", gap: "1.2rem", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.3rem", color: COLORS.white, fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", fontWeight: 600 }}>
+                  <span style={{ color: COLORS.goldenGlow }}>★</span> {app.rating}
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", color: COLORS.ashGrey, fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem" }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  {app.time}
+                </div>
+              </div>
+
+              {/* Cost tag */}
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: COLORS.goldenGlow, fontFamily: "'DM Sans', sans-serif", fontSize: "0.8rem", fontWeight: 500, backgroundColor: "rgba(228,220,34,0.1)", padding: "0.5rem 0.8rem", borderRadius: "8px", alignSelf: "flex-start", marginTop: "0.5rem" }}>
+                {app.deliveryIcon}
+                Envío: {app.fee}
+              </div>
+            </div>
+
+            {/* Floating Order Button (animates up on hover) */}
+            <motion.div 
+              variants={{
+                rest: { y: "120%", opacity: 0 },
+                show: { y: "120%", opacity: 0 },
+                hover: { y: "0%", opacity: 1, transition: { type: "spring", stiffness: 300, damping: 20 } }
+              }}
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                padding: "2rem 1.5rem 1.5rem",
+                background: `linear-gradient(to top, #12120e 70%, transparent)`,
+                display: "flex",
+                justifyContent: "center",
+                zIndex: 3
+              }}
+            >
+              <div style={{ backgroundColor: COLORS.goldenGlow, color: COLORS.pitchBlack, padding: "0.8rem 2rem", borderRadius: "99px", fontFamily: "'DM Sans', sans-serif", fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", width: "100%", textAlign: "center", boxShadow: "0 4px 15px rgba(228,220,34,0.3)" }}>
+                Pedir en {app.appName} →
+              </div>
+            </motion.div>
+          </motion.a>
+        ))}
       </div>
     </section>
   );
