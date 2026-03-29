@@ -496,7 +496,7 @@ function HeroSection() {
       <div style={{ position: "relative", zIndex: 10, width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
 
         {/* "CAFÉ" — top-left area */}
-        <div style={{ overflow: "hidden", position: "absolute", top: isMobile ? "9%" : "15%", left: isMobile ? "6%" : "15%", zIndex: 12 }}>
+        <div style={{ overflow: "hidden", position: "absolute", top: isMobile ? "12%" : "15%", left: isMobile ? "6%" : "15%", zIndex: 12 }}>
           <motion.h1
             initial={{ y: "110%" }}
             animate={{ y: 0 }}
@@ -516,7 +516,7 @@ function HeroSection() {
         </div>
 
         {/* "TR3Z" — right of center */}
-        <div style={{ overflow: "hidden", position: "absolute", top: isMobile ? "auto" : "36%", bottom: isMobile ? "38%" : "auto", right: isMobile ? "6%" : "15%", zIndex: 12 }}>
+        <div style={{ overflow: "hidden", position: "absolute", top: isMobile ? "auto" : "36%", bottom: isMobile ? "32%" : "auto", right: isMobile ? "6%" : "15%", zIndex: 12 }}>
           <motion.h1
             initial={{ y: "110%" }}
             animate={{ y: 0 }}
@@ -543,7 +543,7 @@ function HeroSection() {
           style={{
             position: "relative",
             zIndex: 11,
-            width: isMobile ? "min(75vw, 340px)" : "min(42vw, 550px)",
+            width: isMobile ? "min(65vw, 280px)" : "min(42vw, 550px)",
             aspectRatio: "1",
             y: smoothY2,
           }}
@@ -567,7 +567,7 @@ function HeroSection() {
           transition={{ duration: 1, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
           style={{
             position: "absolute",
-            bottom: isMobile ? "12%" : "18%",
+            bottom: isMobile ? "8%" : "18%",
             left: "-5%",
             right: "-5%",
             zIndex: 20,
@@ -595,7 +595,7 @@ function HeroSection() {
               backgroundColor: COLORS.pitchBlack,
               textDecoration: "none",
               cursor: "pointer",
-              padding: "0.8rem 2.5rem",
+              padding: isMobile ? "0.7rem 1.6rem" : "0.8rem 2.5rem",
               borderRadius: "999px",
               border: "1px solid transparent",
               transition: "all 0.3s ease",
@@ -630,7 +630,7 @@ function HeroSection() {
               backgroundColor: COLORS.pitchBlack,
               textDecoration: "none",
               cursor: "pointer",
-              padding: "0.8rem 2.5rem",
+              padding: isMobile ? "0.7rem 1.6rem" : "0.8rem 2.5rem",
               borderRadius: "999px",
               border: "1px solid transparent",
               transition: "all 0.3s ease",
@@ -661,7 +661,7 @@ function HeroSection() {
           transition={{ duration: 1, delay: 1.8 }}
           style={{
             position: "absolute",
-            bottom: isMobile ? "5%" : "8%",
+            bottom: isMobile ? "2%" : "8%",
             left: "50%",
             transform: "translateX(-50%)",
             fontFamily: "'DM Sans', sans-serif",
@@ -707,6 +707,10 @@ function DeliverySection() {
 
   return (
     <section id="delivery" ref={sectionRef} style={{ backgroundColor: COLORS.pitchBlack, padding: isMobile ? "5rem 6%" : "8rem 10%", position: "relative" }}>
+      {/* Top fade */}
+      <div aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, right: 0, height: "120px", background: `linear-gradient(to bottom, ${COLORS.pitchBlack}, transparent)`, zIndex: 5, pointerEvents: "none" }} />
+      {/* Bottom fade */}
+      <div aria-hidden="true" style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "120px", background: `linear-gradient(to top, ${COLORS.pitchBlack}, transparent)`, zIndex: 5, pointerEvents: "none" }} />
       {/* Neon flicker keyframes — injected once */}
       <style>{`
         @keyframes neonFlicker {
@@ -983,6 +987,10 @@ function MenuSection() {
 
   return (
     <section id="menu" ref={ref} style={{ backgroundColor: COLORS.pitchBlack, padding: isMobile ? "5rem 0" : "8rem 0", position: "relative" }}>
+      {/* Top fade */}
+      <div aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, right: 0, height: "120px", background: `linear-gradient(to bottom, ${COLORS.pitchBlack}, transparent)`, zIndex: 2, pointerEvents: "none" }} />
+      {/* Bottom fade */}
+      <div aria-hidden="true" style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "120px", background: `linear-gradient(to top, ${COLORS.pitchBlack}, transparent)`, zIndex: 2, pointerEvents: "none" }} />
       <motion.div initial={{ opacity: 0, y: 40 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8 }} style={{ textAlign: "center", marginBottom: isMobile ? "3rem" : "5rem" }}>
         <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", letterSpacing: "0.3em", color: COLORS.goldenGlow, textTransform: "uppercase", marginBottom: "1rem" }}>
           — Nuestra Carta —
@@ -1113,7 +1121,11 @@ function SpaceSection() {
   const smoothX = useSpring(x, { stiffness: 40, damping: 15 });
 
   return (
-    <section id="space" ref={ref} style={{ backgroundColor: "#0a0a08", padding: isMobile ? "5rem 0" : "8rem 0", overflow: "hidden" }}>
+    <section id="space" ref={ref} style={{ backgroundColor: COLORS.pitchBlack, padding: isMobile ? "5rem 0" : "8rem 0", overflow: "hidden", position: "relative" }}>
+      {/* Top fade */}
+      <div aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, right: 0, height: "120px", background: `linear-gradient(to bottom, ${COLORS.pitchBlack}, transparent)`, zIndex: 2, pointerEvents: "none" }} />
+      {/* Bottom fade */}
+      <div aria-hidden="true" style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "120px", background: `linear-gradient(to top, ${COLORS.pitchBlack}, transparent)`, zIndex: 2, pointerEvents: "none" }} />
       <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8 }} style={{ padding: "0 8%", marginBottom: isMobile ? "2rem" : "4rem" }}>
         <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", letterSpacing: "0.3em", color: COLORS.goldenGlow, textTransform: "uppercase", marginBottom: "0.75rem" }}>— El Espacio —</p>
         <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", justifyContent: "space-between", alignItems: isMobile ? "flex-start" : "flex-end", gap: isMobile ? "1rem" : 0 }}>
@@ -1201,6 +1213,10 @@ function StorySection() {
 
   return (
     <section id="story" ref={ref} style={{ backgroundColor: COLORS.pitchBlack, padding: isMobile ? "5rem 0" : "10rem 0", position: "relative", overflow: "hidden" }}>
+      {/* Top fade */}
+      <div aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, right: 0, height: "120px", background: `linear-gradient(to bottom, ${COLORS.pitchBlack}, transparent)`, zIndex: 2, pointerEvents: "none" }} />
+      {/* Bottom fade */}
+      <div aria-hidden="true" style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "120px", background: `linear-gradient(to top, ${COLORS.pitchBlack}, transparent)`, zIndex: 2, pointerEvents: "none" }} />
       {!isMobile && (
         <div aria-hidden="true" style={{ position: "absolute", right: "-5%", top: "50%", transform: "translateY(-50%)", fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20rem, 35vw, 40rem)", fontWeight: 700, color: "rgba(228,220,34,0.03)", lineHeight: 1, userSelect: "none", pointerEvents: "none" }}>3</div>
       )}
@@ -1275,7 +1291,9 @@ function ContactSection() {
   const isInView = useInView(ref, { once: true, margin: "-10%" });
 
   return (
-    <section id="contact" ref={ref} style={{ backgroundColor: "#080807", padding: isMobile ? "5rem 0 0" : "8rem 0 0", position: "relative", overflow: "hidden" }}>
+    <section id="contact" ref={ref} style={{ backgroundColor: COLORS.pitchBlack, padding: isMobile ? "5rem 0 0" : "8rem 0 0", position: "relative", overflow: "hidden" }}>
+      {/* Top fade */}
+      <div aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, right: 0, height: "120px", background: `linear-gradient(to bottom, ${COLORS.pitchBlack}, transparent)`, zIndex: 2, pointerEvents: "none" }} />
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: isMobile ? "0 5%" : "0 8%" }}>
         <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8 }} style={{ marginBottom: isMobile ? "3rem" : "5rem" }}>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", letterSpacing: "0.3em", color: COLORS.goldenGlow, textTransform: "uppercase", marginBottom: "1rem" }}>— Encuéntranos —</p>
