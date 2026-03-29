@@ -439,9 +439,9 @@ function HeroSection() {
         
         {/* Flowing Latte SVG Waves */}
         <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" style={{ width: "100%", height: "150%", position: "absolute", top: "-10%", left: 0, opacity: 0.8 }}>
-          {/* Back Wave - Deep Caramel */}
+          {/* Back Wave - Subtle Glow */}
           <motion.path
-            fill="rgba(70,66,12,0.6)"
+            fill="rgba(228,220,34,0.05)"
             animate={{
               d: [
                 "M0,0 L1440,0 L1440,150 Q1080,300 720,200 Q360,100 0,250 Z",
@@ -451,9 +451,9 @@ function HeroSection() {
             }}
             transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
           />
-          {/* Middle Wave - Golden Milk */}
+          {/* Middle Wave - Medium Glow */}
           <motion.path
-            fill="rgba(228,220,34,0.15)"
+            fill="rgba(228,220,34,0.1)"
             animate={{
               d: [
                 "M0,0 L1440,0 L1440,300 Q1080,150 720,300 Q360,450 0,350 Z",
@@ -463,9 +463,9 @@ function HeroSection() {
             }}
             transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
           />
-          {/* Front Wave - Cream */}
+          {/* Front Wave - Strongest Glow */}
           <motion.path
-            fill="rgba(255,255,255,0.05)"
+            fill="rgba(228,220,34,0.15)"
             animate={{
               d: [
                 "M0,0 L1440,0 L1440,500 Q1080,700 720,550 Q360,400 0,600 Z",
@@ -481,12 +481,12 @@ function HeroSection() {
         <motion.div
            animate={{ y: ["-50%", "150%"] }}
            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-           style={{ position: "absolute", top: 0, left: "15%", width: "25%", height: "100%", background: "linear-gradient(180deg, transparent 0%, rgba(228,220,34,0.08) 50%, transparent 100%)", borderRadius: "50%", filter: "blur(60px)" }}
+           style={{ position: "absolute", top: 0, left: "15%", width: "25%", height: "100%", background: "linear-gradient(180deg, transparent 0%, rgba(228,220,34,0.1) 50%, transparent 100%)", borderRadius: "50%", filter: "blur(60px)" }}
         />
         <motion.div
            animate={{ y: ["-100%", "150%"] }}
            transition={{ duration: 20, repeat: Infinity, ease: "linear", delay: 5 }}
-           style={{ position: "absolute", top: 0, right: "20%", width: "35%", height: "120%", background: "linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%)", borderRadius: "50%", filter: "blur(80px)" }}
+           style={{ position: "absolute", top: 0, right: "20%", width: "35%", height: "120%", background: "linear-gradient(180deg, transparent 0%, rgba(228,220,34,0.05) 50%, transparent 100%)", borderRadius: "50%", filter: "blur(80px)" }}
         />
       </div>
 
