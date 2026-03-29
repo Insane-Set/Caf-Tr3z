@@ -439,25 +439,25 @@ function HeroSection() {
 
       {/* --- FLOATING COFFEE BEANS (Real Images) --- */}
       {[
-        { top: "5%", left: "15%", size: 80, rotate: 25, dur: 6, delay: 0, img: 0 },
-        { top: "8%", left: "30%", size: 55, rotate: -40, dur: 7, delay: 0.5, img: 2 },
-        { top: "12%", right: "18%", size: 100, rotate: 60, dur: 5.5, delay: 1, img: 1 },
+        { top: "10%", left: "15%", size: 80, rotate: 25, dur: 6, delay: 0, img: 0 },
+        { top: "14%", left: "30%", size: 55, rotate: -40, dur: 7, delay: 0.5, img: 2 },
+        { top: "18%", right: "16%", size: 85, rotate: 60, dur: 5.5, delay: 1, img: 1 },
         { top: "35%", left: "8%", size: 70, rotate: -15, dur: 8, delay: 0.3, img: 2 },
         { top: "45%", left: "20%", size: 45, rotate: 80, dur: 6.5, delay: 1.2, img: 3 },
         { top: "72%", left: "12%", size: 85, rotate: -55, dur: 7.5, delay: 0.8, img: 4 },
-        { top: "20%", right: "12%", size: 60, rotate: 35, dur: 6, delay: 0.6, img: 5 },
+        { top: "22%", right: "12%", size: 60, rotate: 35, dur: 6, delay: 0.6, img: 5 },
         { top: "50%", right: "15%", size: 90, rotate: -70, dur: 7, delay: 1.5, img: 3 },
         { top: "75%", right: "20%", size: 60, rotate: 20, dur: 5, delay: 0.2, img: 0 },
         { top: "85%", right: "35%", size: 40, rotate: -30, dur: 8, delay: 1.8, img: 2 },
         { top: "88%", left: "28%", size: 55, rotate: 45, dur: 6.8, delay: 0.4, img: 1 },
         { top: "60%", right: "8%", size: 45, rotate: -85, dur: 7.2, delay: 2.0, img: 4 },
-        { top: "15%", left: "5%", size: 45, rotate: 10, dur: 5.8, delay: 1.1, img: 3 },
+        { top: "18%", left: "5%", size: 45, rotate: 10, dur: 5.8, delay: 1.1, img: 3 },
         { top: "25%", right: "25%", size: 50, rotate: -25, dur: 6.2, delay: 0.7, img: 5 },
         { top: "65%", left: "2%", size: 65, rotate: 110, dur: 8.5, delay: 1.5, img: 1 },
         { top: "40%", right: "2%", size: 75, rotate: -45, dur: 6.5, delay: 0.9, img: 0 },
         { top: "95%", right: "15%", size: 50, rotate: 65, dur: 5.5, delay: 2.2, img: 4 },
         { top: "80%", left: "18%", size: 35, rotate: -15, dur: 7, delay: 0.3, img: 2 },
-        { top: "10%", right: "30%", size: 40, rotate: 85, dur: 6, delay: 1.6, img: 3 },
+        { top: "16%", right: "32%", size: 40, rotate: 85, dur: 6, delay: 1.6, img: 3 },
         { top: "55%", right: "25%", size: 55, rotate: -95, dur: 7.5, delay: 1.4, img: 5 },
       ].map((bean, i) => (
         <motion.div
