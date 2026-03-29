@@ -695,11 +695,13 @@ function DeliverySection() {
       appName: "Rappi",
       url: "https://www.rappi.com.mx/restaurantes/1923801310-cafe-tr3z",
       tagline: "Llega directo a tu puerta",
+      rating: 4.6,
     },
     {
       appName: "DiDi Food",
       url: "https://web.didiglobal.com/mx/food/mexicali-bcn/cafe-tr3z/5764607643247968488/",
       tagline: "Ordena fácil y rápido",
+      rating: 4.4,
     },
   ];
 
@@ -781,20 +783,29 @@ function DeliverySection() {
               transition: "border-color 0.3s ease",
             }}
           >
-            {/* Brick Wall Texture Background */}
+            {/* Brick Wall Texture Background — heavier opacity */}
             <div aria-hidden="true" style={{
               position: "absolute",
               inset: 0,
               zIndex: 0,
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='42' height='44' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b5b4a2' fill-opacity='0.04'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='42' height='44' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b5b4a2' fill-opacity='0.12'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
             }} />
 
-            {/* Dark vignette over bricks */}
+            {/* Mortar line overlay for 3D depth */}
+            <div aria-hidden="true" style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 0,
+              backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 21px, rgba(181,180,162,0.05) 21px, rgba(181,180,162,0.05) 22px),
+                repeating-linear-gradient(90deg, transparent, transparent 41px, rgba(181,180,162,0.03) 41px, rgba(181,180,162,0.03) 42px)`,
+            }} />
+
+            {/* Softer vignette over bricks — lets texture show through */}
             <div aria-hidden="true" style={{
               position: "absolute",
               inset: 0,
               zIndex: 1,
-              background: "radial-gradient(ellipse at center, rgba(13,13,10,0.3) 0%, rgba(13,13,10,0.85) 100%)",
+              background: "radial-gradient(ellipse at center, rgba(13,13,10,0.15) 0%, rgba(13,13,10,0.75) 100%)",
               pointerEvents: "none",
             }} />
 
@@ -871,6 +882,51 @@ function DeliverySection() {
             >
               {app.tagline}
             </motion.p>
+
+            {/* Star Rating */}
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: i * 0.25 + 1.7, duration: 0.5 }}
+              style={{
+                position: "relative",
+                zIndex: 3,
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                marginTop: "0.8rem",
+              }}
+            >
+              {/* Stars */}
+              <div style={{ display: "flex", gap: "2px" }}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <svg
+                    key={star}
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill={star <= Math.floor(app.rating) ? COLORS.goldenGlow : (star - app.rating < 1 && star - app.rating > 0 ? COLORS.goldenGlow : "none")}
+                    stroke={COLORS.goldenGlow}
+                    strokeWidth="1.5"
+                    style={{
+                      filter: star <= Math.ceil(app.rating) ? "drop-shadow(0 0 3px rgba(228,220,34,0.5))" : "none",
+                      opacity: star <= Math.ceil(app.rating) ? 1 : 0.3,
+                    }}
+                  >
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                ))}
+              </div>
+              <span style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                color: COLORS.goldenGlow,
+                textShadow: "0 0 8px rgba(228,220,34,0.3)",
+              }}>
+                {app.rating}
+              </span>
+            </motion.div>
 
             {/* Pulsing CTA Button */}
             <motion.div
