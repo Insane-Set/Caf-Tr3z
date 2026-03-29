@@ -1119,6 +1119,20 @@ function SpaceSection() {
   const carouselRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
 
+  useEffect(() => {
+    let prev = 0;
+    const unsubscribe = scrollYProgress.onChange((latest) => {
+      const delta = latest - prev;
+      prev = latest;
+      const ele = carouselRef.current;
+      if (ele && latest > 0 && latest < 1) {
+        // Multiplier controls how fast the gallery scrolls when scrolling down the page
+        ele.scrollLeft += delta * (ele.scrollWidth - ele.clientWidth) * 1.5;
+      }
+    });
+    return () => unsubscribe();
+  }, [scrollYProgress]);
+
   return (
     <section id="space" ref={ref} style={{ backgroundColor: COLORS.pitchBlack, padding: isMobile ? "5rem 0" : "8rem 0", overflow: "hidden", position: "relative" }}>
       {/* Top fade */}
@@ -1163,12 +1177,52 @@ function SpaceSection() {
       ) : (
         /* Desktop: horizontal scroll */
         <>
-          <motion.div 
+          <div 
             ref={carouselRef} 
-            style={{ overflow: "hidden", cursor: "grab", paddingBottom: "1rem" }}
-            whileTap={{ cursor: "grabbing" }}
+            className="hide-scrollbar"
+            style={{ 
+              overflowX: "auto", 
+              overflowY: "hidden",
+              WebkitOverflowScrolling: "touch",
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              cursor: "grab", 
+              paddingBottom: "1.5rem" 
+            }}
+            onMouseDown={(e) => {
+              const ele = carouselRef.current;
+              if (!ele) return;
+              ele.isDown = true;
+              ele.startX = e.pageX - ele.offsetLeft;
+              ele.scrollLeftVal = ele.scrollLeft;
+              ele.style.cursor = "grabbing";
+              ele.style.userSelect = "none";
+            }}
+            onMouseLeave={(e) => {
+              const ele = carouselRef.current;
+              if (!ele) return;
+              ele.isDown = false;
+              ele.style.cursor = "grab";
+              ele.style.removeProperty("user-select");
+            }}
+            onMouseUp={(e) => {
+              const ele = carouselRef.current;
+              if (!ele) return;
+              ele.isDown = false;
+              ele.style.cursor = "grab";
+              ele.style.removeProperty("user-select");
+            }}
+            onMouseMove={(e) => {
+              const ele = carouselRef.current;
+              if (!ele || !ele.isDown) return;
+              e.preventDefault();
+              const x = e.pageX - ele.offsetLeft;
+              const walk = (x - ele.startX) * 1.5;
+              ele.scrollLeft = ele.scrollLeftVal - walk;
+            }}
           >
-            <motion.div drag="x" dragConstraints={carouselRef} style={{ display: "flex", gap: "1.5rem", paddingLeft: "8%", paddingRight: "8%", width: "max-content" }}>
+            <style>{`.hide-scrollbar::-webkit-scrollbar { display: none; }`}</style>
+            <div style={{ display: "flex", gap: "1.5rem", paddingLeft: "8%", paddingRight: "8%", width: "max-content" }}>
               {GALLERY_ITEMS.map((item, i) => (
               <motion.div
                 key={item.id}
@@ -1192,8 +1246,8 @@ function SpaceSection() {
                 </motion.div>
               </motion.div>
             ))}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
           <motion.div style={{ marginTop: "3rem", padding: "0 8%", display: "flex", alignItems: "center", gap: "1rem" }}>
             <div style={{ flex: 1, height: "1px", backgroundColor: "rgba(181,180,162,0.15)", position: "relative" }}>
               <motion.div style={{ position: "absolute", top: 0, left: 0, height: "100%", backgroundColor: COLORS.goldenGlow, scaleX: useTransform(scrollYProgress, [0, 0.8], [0, 1]), transformOrigin: "left" }} />
