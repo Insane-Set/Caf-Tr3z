@@ -529,13 +529,13 @@ function HeroSection() {
 
         {/* Signature Cup — centered */}
         <motion.div
-          initial={{ opacity: 0, y: 50, scale: 0.85 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
+          initial={{ opacity: 0, y: 50, scale: 0.85, rotate: 0 }}
+          animate={{ opacity: 1, y: 0, scale: 1, rotate: 12 }}
           transition={{ duration: 1.2, delay: 1, ease: [0.16, 1, 0.3, 1] }}
           style={{
             position: "relative",
             zIndex: 11,
-            width: isMobile ? "min(60vw, 280px)" : "min(32vw, 420px)",
+            width: isMobile ? "min(75vw, 340px)" : "min(42vw, 550px)",
             aspectRatio: "1",
             y: smoothY2,
           }}
@@ -565,79 +565,80 @@ function HeroSection() {
             zIndex: 20,
             backgroundColor: COLORS.goldenGlow,
             transform: "rotate(-3deg)",
-            padding: isMobile ? "0.8rem 0" : "1rem 0",
+            padding: isMobile ? "1.5rem 0" : "1.5rem 0",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            gap: isMobile ? "1.5rem" : "4rem",
+            gap: isMobile ? "1.5rem" : "3rem",
             overflow: "hidden",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
           }}
         >
-          {/* Scrolling repeat decoration */}
+          {/* Styled Nav Buttons */}
           <a
             href="#menu"
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: isMobile ? "0.7rem" : "0.85rem",
+              fontSize: isMobile ? "0.8rem" : "0.95rem",
               fontWeight: 700,
-              letterSpacing: "0.2em",
+              letterSpacing: "0.15em",
               textTransform: "uppercase",
-              color: COLORS.pitchBlack,
+              color: COLORS.goldenGlow,
+              backgroundColor: COLORS.pitchBlack,
               textDecoration: "none",
               cursor: "pointer",
-              padding: "0.5rem 1.5rem",
-              borderRadius: "2px",
-              transition: "opacity 0.2s",
+              padding: "0.8rem 2.5rem",
+              borderRadius: "999px",
+              border: "1px solid transparent",
+              transition: "all 0.3s ease",
+              boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
               whiteSpace: "nowrap",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.6")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.color = COLORS.pitchBlack;
+              e.currentTarget.style.border = `1px solid ${COLORS.pitchBlack}`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = COLORS.pitchBlack;
+              e.currentTarget.style.color = COLORS.goldenGlow;
+              e.currentTarget.style.border = "1px solid transparent";
+            }}
           >
-            ☕ Ver Menú
+            Ver Menú
           </a>
-          <span style={{ width: "4px", height: "4px", borderRadius: "50%", backgroundColor: COLORS.pitchBlack, opacity: 0.4 }} />
+          
           <a
             href="#story"
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: isMobile ? "0.7rem" : "0.85rem",
+              fontSize: isMobile ? "0.8rem" : "0.95rem",
               fontWeight: 700,
-              letterSpacing: "0.2em",
+              letterSpacing: "0.15em",
               textTransform: "uppercase",
-              color: COLORS.pitchBlack,
+              color: COLORS.goldenGlow,
+              backgroundColor: COLORS.pitchBlack,
               textDecoration: "none",
               cursor: "pointer",
-              padding: "0.5rem 1.5rem",
-              borderRadius: "2px",
-              transition: "opacity 0.2s",
+              padding: "0.8rem 2.5rem",
+              borderRadius: "999px",
+              border: "1px solid transparent",
+              transition: "all 0.3s ease",
+              boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
               whiteSpace: "nowrap",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.6")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-          >
-            Nuestra Historia →
-          </a>
-          <span style={{ width: "4px", height: "4px", borderRadius: "50%", backgroundColor: COLORS.pitchBlack, opacity: 0.4 }} />
-          <a
-            href="#menu"
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: isMobile ? "0.7rem" : "0.85rem",
-              fontWeight: 700,
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              color: COLORS.pitchBlack,
-              textDecoration: "none",
-              cursor: "pointer",
-              padding: "0.5rem 1.5rem",
-              borderRadius: "2px",
-              transition: "opacity 0.2s",
-              whiteSpace: "nowrap",
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.color = COLORS.pitchBlack;
+              e.currentTarget.style.border = `1px solid ${COLORS.pitchBlack}`;
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.6")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = COLORS.pitchBlack;
+              e.currentTarget.style.color = COLORS.goldenGlow;
+              e.currentTarget.style.border = "1px solid transparent";
+            }}
           >
-            ☕ Ver Menú
+            Nuestra Historia
           </a>
         </motion.div>
 
@@ -985,8 +986,34 @@ function StorySection() {
         <div aria-hidden="true" style={{ position: "absolute", right: "-5%", top: "50%", transform: "translateY(-50%)", fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20rem, 35vw, 40rem)", fontWeight: 700, color: "rgba(228,220,34,0.03)", lineHeight: 1, userSelect: "none", pointerEvents: "none" }}>3</div>
       )}
 
-      <div style={{ maxWidth: "900px", margin: "0 auto", padding: isMobile ? "0 5%" : "0 8%" }}>
-        <motion.p custom={0} variants={paragraphVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}
+      <div style={{ 
+        maxWidth: "1000px", 
+        margin: "0 auto", 
+        padding: isMobile ? "3rem 1.5rem" : "5rem 4rem",
+        position: "relative",
+        border: `1.5px solid ${COLORS.goldenGlow}`,
+        borderRadius: "16px",
+        backgroundColor: COLORS.pitchBlack,
+        overflow: "hidden"
+      }}>
+        {/* Brick Background Layer */}
+        <div aria-hidden="true" style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='42' height='44' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e4dc22' fill-opacity='0.15'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          zIndex: 0
+        }} />
+        {/* Black Center Gradient Layer */}
+        <div aria-hidden="true" style={{
+          position: "absolute",
+          inset: 0,
+          background: "radial-gradient(ellipse at center, rgba(13,12,9,1) 30%, rgba(13,12,9,0.7) 75%, transparent 100%)",
+          zIndex: 1
+        }} />
+
+        {/* Content Layer */}
+        <div style={{ position: "relative", zIndex: 2 }}>
+          <motion.p custom={0} variants={paragraphVariants} initial="hidden" animate={isInView ? "visible" : "hidden"}
           style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", letterSpacing: "0.3em", color: COLORS.goldenGlow, textTransform: "uppercase", marginBottom: isMobile ? "2rem" : "3rem" }}>
           — Nuestra Historia —
         </motion.p>
@@ -1016,6 +1043,7 @@ function StorySection() {
             <span key={v} style={{ padding: "0.4rem 1rem", borderRadius: "9999px", border: "1px solid rgba(228,220,34,0.25)", fontFamily: "'DM Sans', sans-serif", fontSize: "0.65rem", letterSpacing: "0.12em", color: COLORS.ashGrey, textTransform: "uppercase" }}>{v}</span>
           ))}
         </motion.div>
+        </div>
       </div>
     </section>
   );
